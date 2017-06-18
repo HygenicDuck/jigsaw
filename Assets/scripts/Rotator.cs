@@ -1,0 +1,173 @@
+﻿using UnityEngine;
+using System.Collections;
+
+public class Rotator : MessagingManager {
+
+	enum Axis
+	{
+		X,
+		Y,
+		Z
+	}
+
+	Axis m_rotationAxis;
+	Quaternion m_fromRot;
+	Quaternion m_toRot;
+	bool m_isRotating;
+	float m_timer;
+	float m_moveDuration;
+	bool m_linearInterpolation;
+	private AudioSource m_audioSource;
+	bool m_rotationBlocked = false;
+
+	[SerializeField] 
+	CubeState m_cubeState;
+	[SerializeField] 
+	AudioClip m_sfxCubeRotate;
+
+	// Use this for initialization
+	void Start () {
+		m_isRotating = false;
+		m_rotationBlocked = false;
+
+		TouchSwipeDetector.Instance.StartListening("SWIPE_LEFT", RotateLeft);
+		TouchSwipeDetector.Instance.StartListening("SWIPE_RIGHT", RotateRight);
+		TouchSwipeDetector.Instance.StartListening("SWIPE_UP", RotateUp);
+		TouchSwipeDetector.Instance.StartListening("SWIPE_DOWN", RotateDown);
+		TouchSwipeDetector.Instance.StartListening("SWIPE_CLOCKWISE", RotateClockwise);
+		TouchSwipeDetector.Instance.StartListening("SWIPE_ANTICLOCKWISE", RotateAntiClockwise);
+
+		ResetRotation();
+
+		m_audioSource = GetComponent<AudioSource>();
+	}
+	
+	// Update is called once per frame
+	void Update () 
+	{
+		if (m_isRotating)
+		{
+			m_timer += Time.deltaTime;
+			if (m_timer >= m_moveDuration)
+			{
+				m_timer = m_moveDuration;
+				m_isRotating = false;
+				TriggerEvent("ROTATION_COMPLETE");
+			}
+
+			float p = m_timer / m_moveDuration;
+			if (!m_linearInterpolation)
+			{
+				p = p*p * (3f - 2f*p);
+			}
+			transform.rotation = Quaternion.Slerp(m_fromRot, m_toRot, p);
+		}
+	}
+
+	public void ResetRotation()
+	{
+		transform.rotation = Quaternion.identity;
+	}
+
+	public void RotateTo(Quaternion destination, float time = 1f, bool linear = false)
+	{
+		m_fromRot = transform.rotation;
+		m_toRot = destination;
+		m_timer = 0f;
+		m_moveDuration = time;
+		m_isRotating = true;
+		m_linearInterpolation = linear;
+	}
+
+	void Rotate90Degrees(int direction, Axis axis, float time)
+	{
+		float angle = 90f * direction;
+		Quaternion rot = Quaternion.identity;
+		switch(axis)
+		{
+		case Axis.X:
+			rot = Quaternion.Euler(angle, 0f, 0f);
+			break;
+		case Axis.Y:
+			rot = Quaternion.Euler(0f, angle, 0f);
+			break;
+		case Axis.Z:
+			rot = Quaternion.Euler(0f, 0f, angle);
+			break;
+		}
+
+		m_fromRot = transform.rotation;
+		m_toRot = rot * m_fromRot;	// * rot;
+		m_timer = 0f;
+		m_moveDuration = time;
+		m_isRotating = true;
+
+		m_audioSource.PlayOneShot(m_sfxCubeRotate, 1f);
+	}
+
+	public void RotateLeft()
+	{
+		if (!m_isRotating && !m_rotationBlocked)
+		{
+			Rotate90Degrees(1, Axis.Y, 0.3f);
+			m_cubeState.DoRotation(CubeState.RotationActions.LEFT);
+		}
+	}
+
+	public void RotateRight()
+	{
+		if (!m_isRotating && !m_rotationBlocked)
+		{
+			Rotate90Degrees(-1, Axis.Y, 0.3f);
+			m_cubeState.DoRotation(CubeState.RotationActions.RIGHT);
+		}
+	}
+
+	public void RotateUp()
+	{
+		if (!m_isRotating && !m_rotationBlocked)
+		{
+			Rotate90Degrees(1, Axis.X, 0.3f);
+			m_cubeState.DoRotation(CubeState.RotationActions.UP);
+		}
+	}
+
+	public void RotateDown()
+	{
+		if (!m_isRotating && !m_rotationBlocked)
+		{
+			Rotate90Degrees(-1, Axis.X, 0.3f);
+			m_cubeState.DoRotation(CubeState.RotationActions.DOWN);
+		}
+	}
+
+	public void RotateClockwise()
+	{
+		if (!m_isRotating && !m_rotationBlocked)
+		{
+			Rotate90Degrees(-1, Axis.Z, 0.3f);
+			m_cubeState.DoRotation(CubeState.RotationActions.CLOCKWISE);
+		}
+	}
+
+	public void RotateAntiClockwise()
+	{
+		if (!m_isRotating && !m_rotationBlocked)
+		{
+			Rotate90Degrees(1, Axis.Z, 0.3f);
+			m_cubeState.DoRotation(CubeState.RotationActions.ANTI_CLOCKWISE);
+		}
+	}
+
+	public void BlockRotationForTimePeriod(float time)
+	{
+		StartCoroutine(BlockRotationForTimePeriodCoroutine(time));
+	}
+
+	IEnumerator BlockRotationForTimePeriodCoroutine(float time)
+	{
+		m_rotationBlocked = true;
+		yield return new WaitForSeconds(time);
+		m_rotationBlocked = false;
+	}
+}
