@@ -41,7 +41,9 @@ public class LevelButton : MonoBehaviour {
 
     public void StartLevel()
     {
-        GameStateClass.Instance.SetLevelNumber(m_levelNumber);
-        SceneManager.LoadScene("mainGame");
+		if (GameStateClass.Instance.m_unlockedLevels [m_levelNumber]) {
+			GameStateClass.Instance.SetLevelNumber (m_levelNumber);
+			SceneManager.LoadScene ("mainGame");
+		}
     }
 }

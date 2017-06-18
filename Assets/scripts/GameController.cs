@@ -84,11 +84,11 @@ public class GameController : MonoBehaviour
 
 	void Start()
 	{
-		GameObject gOb = GameObject.Find("persistentObject");
-		if (gOb != null)
-		{
-			m_gameStateClass = gOb.GetComponent<GameStateClass>();
-		}
+		//GameObject gOb = GameObject.Find("persistentObject");
+		//if (gOb != null)
+		//{
+		m_gameStateClass = GameStateClass.Instance;
+		//}
 
 		m_cubeState = m_cube.GetComponent<CubeState>();
         m_initialCubePosition = m_cubeMover.gameObject.transform.localPosition;
@@ -251,7 +251,7 @@ public class GameController : MonoBehaviour
         CubeSinksIntoBackground();
         yield return new WaitForSeconds(1.5f);
         m_faceFoundCount++;
-        if (m_faceFoundCount == NUM_FACES_ON_A_CUBE)
+		if (m_faceFoundCount == NUM_FACES_ON_A_CUBE)
         {
             yield return LevelCompleteCoroutine();
         }
@@ -408,7 +408,7 @@ public class GameController : MonoBehaviour
 
 	void ChooseFaceMaterialMappings()
 	{
-		int levelNum = 1;
+		int levelNum = 0;
 		if (m_gameStateClass != null)
 		{
 			levelNum = m_gameStateClass.GetLevelNumber();

@@ -633,6 +633,14 @@ MonoBehaviour:
   m_levelButtonPrefab: {fileID: 1988577515469666, guid: 1b3ccea6956fed045898043740e574d1,
     type: 2}
   m_levelButtonsPanel: {fileID: 1385833645}
+  m_levelLockedPadlock: {fileID: 21300000, guid: dbdb049cef67141849bdf526e0c6688d,
+    type: 3}
+  m_levelIcons:
+  - {fileID: 21300000, guid: 6f54a8977baed4ace85431d56323fe90, type: 3}
+  - {fileID: 21300000, guid: 6f54a8977baed4ace85431d56323fe90, type: 3}
+  - {fileID: 21300000, guid: 6f54a8977baed4ace85431d56323fe90, type: 3}
+  - {fileID: 21300000, guid: 6f54a8977baed4ace85431d56323fe90, type: 3}
+  - {fileID: 21300000, guid: 6f54a8977baed4ace85431d56323fe90, type: 3}
 --- !u!1 &898581680
 GameObject:
   m_ObjectHideFlags: 0
@@ -1201,7 +1209,7 @@ Prefab:
     - target: {fileID: 224470997001500536, guid: 6a4c453261a27bb4b8f6932d7afbf114,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: -1239
+      value: -1212
       objectReference: {fileID: 0}
     - target: {fileID: 114872647792033354, guid: 6a4c453261a27bb4b8f6932d7afbf114,
         type: 2}
@@ -1475,6 +1483,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 893452a2045b94d62b0123f7322bf9b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_unlockedLevels: 0000000000
 --- !u!114 &1928360711
 MonoBehaviour:
   m_ObjectHideFlags: 0
