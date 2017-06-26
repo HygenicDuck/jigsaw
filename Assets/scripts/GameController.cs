@@ -7,7 +7,10 @@ using UnityEngine.SceneManagement;
 public class GameController : MonoBehaviour
 {
 	const int NUM_FACES_ON_A_CUBE = 6;
-	int m_requiredNumber = 0;
+	const bool CHOOSE_ANOTHER_FACE_AFTER_EACH_WRONG_ANSWER = true;
+
+	//int m_requiredNumber = 0;
+	FaceState m_requiredFace;
 	int m_score = 0;
     int m_faceFoundCount = 0;
 	CubeState m_cubeState = null;
@@ -39,10 +42,12 @@ public class GameController : MonoBehaviour
 
     [SerializeField] 
 	Material[] m_faceMaterials;
-	[SerializeField] 
-	Material[] m_UIfaceMaterials;
+//	[SerializeField] 
+//	Material[] m_UIfaceMaterials;
     [SerializeField]
     Material m_memorizeMaterial;
+	[SerializeField]
+	bool[] m_levelRequiresCorrectCubeOrientation;
 
     //	[SerializeField] 
     //	RawImage m_UIRequiredFaceImage;
@@ -163,23 +168,23 @@ public class GameController : MonoBehaviour
 		SwitchToState(GameState.MEMORIZE);
 	}
 
-    int GetNextRequiredFace(CubeState.RotationActions move)
+	FaceState GetNextRequiredFace(CubeState.RotationActions move)
     {
         m_agTempFaceStates = m_cubeOrientation.GetFaceStates();
-        int returnValue = 0;
+		FaceState returnValue = null;
         switch (move)
         {
             case CubeState.RotationActions.UP:
-                returnValue = m_agTempFaceStates.GetFaceState(CubeState.Faces.BOTTOM).m_state;
+                returnValue = m_agTempFaceStates.GetFaceState(CubeState.Faces.BOTTOM);
                 break;
             case CubeState.RotationActions.DOWN:
-                returnValue = m_agTempFaceStates.GetFaceState(CubeState.Faces.TOP).m_state;
+                returnValue = m_agTempFaceStates.GetFaceState(CubeState.Faces.TOP);
                 break;
             case CubeState.RotationActions.LEFT:
-                returnValue = m_agTempFaceStates.GetFaceState(CubeState.Faces.RIGHT).m_state;
+                returnValue = m_agTempFaceStates.GetFaceState(CubeState.Faces.RIGHT);
                 break;
             case CubeState.RotationActions.RIGHT:
-                returnValue = m_agTempFaceStates.GetFaceState(CubeState.Faces.LEFT).m_state;
+                returnValue = m_agTempFaceStates.GetFaceState(CubeState.Faces.LEFT);
                 break;
         }
 
@@ -202,8 +207,31 @@ public class GameController : MonoBehaviour
 
     void DisplayRequiredFace()
     {
-        Debug.Log("m_requiredNumber " + m_requiredNumber + ", " + m_cubeMaterialMappings[m_requiredNumber]);
-        m_backgroundPlane.SetAllMaterials(m_faceMaterials[m_cubeMaterialMappings[m_requiredNumber]]);
+		Debug.Log("m_requiredNumber " + m_requiredFace.m_state + ", " + m_cubeMaterialMappings[m_requiredFace.m_state]);
+		m_backgroundPlane.SetAllMaterials(m_faceMaterials[m_cubeMaterialMappings[m_requiredFace.m_state]]);
+		float rot = 0f;
+		switch (m_requiredFace.m_orientation) {
+		case FaceState.Orientations.UP:
+			rot = 0f;
+			break;
+		case FaceState.Orientations.DOWN:
+			rot = 180f;
+			break;
+		case FaceState.Orientations.LEFT:
+			rot = 90f;
+			break;
+		case FaceState.Orientations.RIGHT:
+			rot = -90f;
+			break;
+		}
+		if (m_requiredFace.m_state == 3)
+			rot -= 90f;
+		if (m_requiredFace.m_state == 1)
+			rot += 90f;
+		if (m_requiredFace.m_state == 5)
+			rot += 180f;
+
+		m_backgroundPlane.transform.rotation = Quaternion.Euler(0f,0f,rot);
     }
 
     void ChangeRequiredFace()
@@ -288,12 +316,22 @@ public class GameController : MonoBehaviour
 
         //Debug.Log("front = "+m_cubeState.GetFaceState(CubeState.Faces.FRONT).m_state+", m_requiredNumber = "+m_requiredNumber);
         //if (m_cubeState.GetFaceState(CubeState.Faces.FRONT).m_state == m_requiredNumber)
-        Debug.Log("front = "+ m_agTempFaceStates.GetFaceState(CubeState.Faces.FRONT).m_state+", m_requiredNumber = "+m_requiredNumber);
-        if (m_agTempFaceStates.GetFaceState(CubeState.Faces.FRONT).m_state == m_requiredNumber)
+		Debug.Log("front = "+ m_agTempFaceStates.GetFaceState(CubeState.Faces.FRONT).m_state+", orientation = "+ m_agTempFaceStates.GetFaceState(CubeState.Faces.FRONT).m_orientation+", m_requiredFace = "+m_requiredFace.m_state+", m_requiredOrientation = "+m_requiredFace.m_orientation);
+
+		int levelNum = 0;
+		if (m_gameStateClass != null)
+		{
+			levelNum = m_gameStateClass.GetLevelNumber();
+		}
+
+		bool correctOrientation = (m_agTempFaceStates.GetFaceState(CubeState.Faces.FRONT).m_orientation == m_requiredFace.m_orientation);
+
+		if ((m_agTempFaceStates.GetFaceState(CubeState.Faces.FRONT).m_state == m_requiredFace.m_state) &&
+			(correctOrientation || !m_levelRequiresCorrectCubeOrientation[levelNum]))
         {
             // correct
             //IncrementScore();
-            m_requiredNumber = GetNextRequiredFace(GetNextMoveInSequence());
+			m_requiredFace = GetNextRequiredFace(GetNextMoveInSequence());
             //PickRandomRequiredFace();
             StartCoroutine(CorrectFaceSequence());
         }
@@ -315,6 +353,11 @@ public class GameController : MonoBehaviour
 
 		//yield return new WaitForSeconds(2.0f);
 		//NewGame();
+
+		if (CHOOSE_ANOTHER_FACE_AFTER_EACH_WRONG_ANSWER) {
+			m_requiredFace = GetNextRequiredFace (GetNextMoveInSequence ());
+			yield return ChangeRequiredFaceCoroutine ();
+		}
 	}
 
 	void IncrementScore()
@@ -357,7 +400,7 @@ public class GameController : MonoBehaviour
 			break;
 		case GameState.FIND:
             StartMoveSequence();
-            m_requiredNumber = GetNextRequiredFace(GetNextMoveInSequence());
+            m_requiredFace = GetNextRequiredFace(GetNextMoveInSequence());
             //PickRandomRequiredFace();
             DisplayRequiredFace();
 

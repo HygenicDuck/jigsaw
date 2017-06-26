@@ -2661,14 +2661,8 @@ MonoBehaviour:
   - {fileID: 2100000, guid: ff9867e49920248fb82ba33dea57f43e, type: 2}
   - {fileID: 2100000, guid: 16ffc94de04c047409b698395c4cced0, type: 2}
   - {fileID: 2100000, guid: ecf5ccb99d1be4fddab485db823fc5ae, type: 2}
-  m_UIfaceMaterials:
-  - {fileID: 2100000, guid: eb68fccd750de416c963941fe12254c0, type: 2}
-  - {fileID: 2100000, guid: 4e416d53e8de443739aa7a5e08a505a8, type: 2}
-  - {fileID: 2100000, guid: e7dd79f4c2b99450696f30452c43ffe2, type: 2}
-  - {fileID: 2100000, guid: c0194ec72255d48569ae4bea48de2077, type: 2}
-  - {fileID: 2100000, guid: 391169126d63346d6a9d54da17e94d83, type: 2}
-  - {fileID: 2100000, guid: cc0835297ec004eed8615107816b0c13, type: 2}
   m_memorizeMaterial: {fileID: 2100000, guid: 36f962adaf04b497f94380b58ddcaac2, type: 2}
+  m_levelRequiresCorrectCubeOrientation: 000100
   m_backgroundPlane: {fileID: 855723102}
   m_ImReadyButton: {fileID: 788124704}
   m_faderPlane: {fileID: 444560204}
