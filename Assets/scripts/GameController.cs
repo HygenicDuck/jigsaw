@@ -9,7 +9,6 @@ public class GameController : MonoBehaviour
 	const int NUM_FACES_ON_A_CUBE = 6;
 	const bool CHOOSE_ANOTHER_FACE_AFTER_EACH_WRONG_ANSWER = true;
 
-	//int m_requiredNumber = 0;
 	FaceState m_requiredFace;
 	int m_score = 0;
     int m_faceFoundCount = 0;
@@ -42,15 +41,11 @@ public class GameController : MonoBehaviour
 
     [SerializeField] 
 	Material[] m_faceMaterials;
-//	[SerializeField] 
-//	Material[] m_UIfaceMaterials;
     [SerializeField]
     Material m_memorizeMaterial;
 	[SerializeField]
 	bool[] m_levelRequiresCorrectCubeOrientation;
 
-    //	[SerializeField] 
-    //	RawImage m_UIRequiredFaceImage;
     [SerializeField] 
 	BackgroundPlane m_backgroundPlane;
 	[SerializeField] 
@@ -74,7 +69,6 @@ public class GameController : MonoBehaviour
 	int m_sequencePosition = 0;
 	int m_sequenceType = 0;
 	int m_sequenceStartPosition = 0;
-	//CubeState.Faces[] m_sequence2 = { CubeState.RotationActions.UP, CubeState.RotationActions.RIGHT, CubeState.RotationActions.UP, CubeState.RotationActions.RIGHT, CubeState.RotationActions.UP, CubeState.RotationActions.RIGHT };
 
 
 	enum GameState
@@ -89,12 +83,7 @@ public class GameController : MonoBehaviour
 
 	void Start()
 	{
-		//GameObject gOb = GameObject.Find("persistentObject");
-		//if (gOb != null)
-		//{
 		m_gameStateClass = GameStateClass.Instance;
-		//}
-
 		m_cubeState = m_cube.GetComponent<CubeState>();
         m_initialCubePosition = m_cubeMover.gameObject.transform.localPosition;
         ResetCubeOrientation();
@@ -110,10 +99,6 @@ public class GameController : MonoBehaviour
 	{
 		// set up everything for the start of a new sequence of 6 moves
 		m_sequenceType = Random.Range(0,2);
-        //m_sequenceStartPosition = 2;
-        //m_flipSequenceHorizontally = false;
-        //m_flipSequenceVertically = false;
-
         m_sequenceStartPosition = Random.Range(0,6);
 		m_sequencePosition = m_sequenceStartPosition;
 		m_flipSequenceHorizontally = Random.value < 0.5f;
@@ -140,7 +125,6 @@ public class GameController : MonoBehaviour
 			m_sequencePosition = 0;
 		}
 
-        Debug.Log("GetNextMoveInSequence = " + yflipped);
 		return yflipped;
 	}
 
@@ -194,20 +178,8 @@ public class GameController : MonoBehaviour
     }
 
 
- //   void PickRandomRequiredFace()
-	//{
- //       int[] adjacentNumbers = new int[4];
- //       m_agTempFaceStates = m_cubeOrientation.GetFaceStates();
- //       adjacentNumbers[0] = m_agTempFaceStates.GetFaceState(CubeState.Faces.TOP).m_state;
-	//	adjacentNumbers[1] = m_agTempFaceStates.GetFaceState(CubeState.Faces.BOTTOM).m_state;
-	//	adjacentNumbers[2] = m_agTempFaceStates.GetFaceState(CubeState.Faces.LEFT).m_state;
-	//	adjacentNumbers[3] = m_agTempFaceStates.GetFaceState(CubeState.Faces.RIGHT).m_state;
-	//	m_requiredNumber = adjacentNumbers[Random.Range(0,4)];
-	//}
-
     void DisplayRequiredFace()
     {
-		Debug.Log("m_requiredNumber " + m_requiredFace.m_state + ", " + m_cubeMaterialMappings[m_requiredFace.m_state]);
 		m_backgroundPlane.SetAllMaterials(m_faceMaterials[m_cubeMaterialMappings[m_requiredFace.m_state]]);
 		float rot = 0f;
 		switch (m_requiredFace.m_orientation) {
@@ -314,10 +286,6 @@ public class GameController : MonoBehaviour
             Debug.LogError("ERROR!!!! difference in facestates");
         }
 
-        //Debug.Log("front = "+m_cubeState.GetFaceState(CubeState.Faces.FRONT).m_state+", m_requiredNumber = "+m_requiredNumber);
-        //if (m_cubeState.GetFaceState(CubeState.Faces.FRONT).m_state == m_requiredNumber)
-		Debug.Log("front = "+ m_agTempFaceStates.GetFaceState(CubeState.Faces.FRONT).m_state+", orientation = "+ m_agTempFaceStates.GetFaceState(CubeState.Faces.FRONT).m_orientation+", m_requiredFace = "+m_requiredFace.m_state+", m_requiredOrientation = "+m_requiredFace.m_orientation);
-
 		int levelNum = 0;
 		if (m_gameStateClass != null)
 		{
@@ -350,9 +318,6 @@ public class GameController : MonoBehaviour
 		IncrementScore();
 		yield return new WaitForSeconds(0.5f);
 		m_cube.GetComponent<Cube>().ResetAnimation();
-
-		//yield return new WaitForSeconds(2.0f);
-		//NewGame();
 
 		if (CHOOSE_ANOTHER_FACE_AFTER_EACH_WRONG_ANSWER) {
 			m_requiredFace = GetNextRequiredFace (GetNextMoveInSequence ());

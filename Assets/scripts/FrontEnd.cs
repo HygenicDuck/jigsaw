@@ -4,8 +4,6 @@ using UnityEngine.SceneManagement;
 
 public class FrontEnd : MonoBehaviour {
 
-//	[SerializeField] 
-//	public GameStateClass gameState;
     [SerializeField]
     public GameObject m_levelButtonPrefab;
     [SerializeField]

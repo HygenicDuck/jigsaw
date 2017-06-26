@@ -50,8 +50,6 @@ public class CubeOrientation : MonoBehaviour
 
     public FaceStates GetFaceStates()
     {
-        Debug.Log("GetFaceStates 1");
-
         Vector3 forward = transform.forward;
         Vector3 up = transform.up;
 
@@ -371,8 +369,6 @@ public class CubeOrientation : MonoBehaviour
                 }
                 break;
         }
-
-        Debug.Log("GetFaceStates 2");
 
         // couldn't find a valid orientation
         return null;
