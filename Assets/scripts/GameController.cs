@@ -2,7 +2,7 @@
 using UnityEngine.UI;
 using System.Collections;
 using UnityEngine.SceneManagement;
-
+using System.Collections.Generic;
 
 public class GameController : MonoBehaviour
 {
@@ -38,9 +38,13 @@ public class GameController : MonoBehaviour
     [SerializeField]
     GameObject m_levelUnlockedText;
 
+	[SerializeField] 
+	Material m_prototypeFaceMaterial;
+	[SerializeField] 
+	List<Material> m_faceMaterialsList = new List<Material> ();
 
-    [SerializeField] 
-	Material[] m_faceMaterials;
+	[SerializeField] 
+	Texture[] m_faceTextures;
     [SerializeField]
     Material m_memorizeMaterial;
 	[SerializeField]
@@ -87,12 +91,20 @@ public class GameController : MonoBehaviour
 		m_cubeState = m_cube.GetComponent<CubeState>();
         m_initialCubePosition = m_cubeMover.gameObject.transform.localPosition;
         ResetCubeOrientation();
+		GenerateMaterialsFromTextures ();
 		SetUpFacesOfCube();
 		NewGame();
 	}
 
 
-
+	void GenerateMaterialsFromTextures()
+	{
+		foreach (Texture t in m_faceTextures) {
+			Material m = new Material (m_prototypeFaceMaterial);
+			m.SetTexture ("_MainTex", t);
+			m_faceMaterialsList.Add (m);
+		}
+	}
 
 
 	void StartMoveSequence()
@@ -180,7 +192,7 @@ public class GameController : MonoBehaviour
 
     void DisplayRequiredFace()
     {
-		m_backgroundPlane.SetAllMaterials(m_faceMaterials[m_cubeMaterialMappings[m_requiredFace.m_state]]);
+		m_backgroundPlane.SetAllMaterials(m_faceMaterialsList[m_cubeMaterialMappings[m_requiredFace.m_state]]);
 		float rot = 0f;
 		switch (m_requiredFace.m_orientation) {
 		case FaceState.Orientations.UP:
@@ -435,7 +447,7 @@ public class GameController : MonoBehaviour
 		for(int i = 0; i<6; i++)
 		{
 			Cube cube = m_cube.GetComponent<Cube>();
-			cube.SetFaceMaterial(i, m_faceMaterials[m_cubeMaterialMappings[i]]);
+			cube.SetFaceMaterial(i, m_faceMaterialsList[m_cubeMaterialMappings[i]]);
 		}
 	}
 

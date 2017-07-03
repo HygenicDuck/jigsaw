@@ -2642,6 +2642,8 @@ MonoBehaviour:
   m_levelCompleteText: {fileID: 348782556}
   m_perfectText: {fileID: 521161607}
   m_levelUnlockedText: {fileID: 991896508}
+  m_prototypeFaceMaterial: {fileID: 2100000, guid: fec5cebaa561a7f4cb45fa323be7f7e3,
+    type: 2}
   m_faceMaterials:
   - {fileID: 2100000, guid: abd2313c2ad9e4551b08f577a72cb032, type: 2}
   - {fileID: 2100000, guid: 36f962adaf04b497f94380b58ddcaac2, type: 2}
@@ -2661,6 +2663,26 @@ MonoBehaviour:
   - {fileID: 2100000, guid: ff9867e49920248fb82ba33dea57f43e, type: 2}
   - {fileID: 2100000, guid: 16ffc94de04c047409b698395c4cced0, type: 2}
   - {fileID: 2100000, guid: ecf5ccb99d1be4fddab485db823fc5ae, type: 2}
+  m_faceMaterialsList: []
+  m_faceTextures:
+  - {fileID: 2800000, guid: 3b92e71e5cd8949ffaae4a640ee82820, type: 3}
+  - {fileID: 2800000, guid: b7f62d41063c6460aad72c728d14e6ad, type: 3}
+  - {fileID: 2800000, guid: 8b0950a20fc5941d88ffbb282e2b7220, type: 3}
+  - {fileID: 2800000, guid: da2c544f8bc514d72b94f8ade0f23e4d, type: 3}
+  - {fileID: 2800000, guid: 40eb84cf043994755a6d12327c1a58c5, type: 3}
+  - {fileID: 2800000, guid: c756e961ccd024b12b2150eb7c39f83d, type: 3}
+  - {fileID: 2800000, guid: bb6be6174a4d44fc5a3a89a7f95b017b, type: 3}
+  - {fileID: 2800000, guid: 0b3fda14dd0e747f6a923911b35e13f5, type: 3}
+  - {fileID: 2800000, guid: cffd25313f20544df9644888838694af, type: 3}
+  - {fileID: 2800000, guid: a947cdfe740614164aae1c1d295abe62, type: 3}
+  - {fileID: 2800000, guid: ecec62c1195174df8bf9401a34630924, type: 3}
+  - {fileID: 2800000, guid: 690822699754c4a8f8d90f8b42f44e09, type: 3}
+  - {fileID: 2800000, guid: 502ab23a1e46f41fd9a742a85af88591, type: 3}
+  - {fileID: 2800000, guid: 7adaf9e82fb6743f994892075b132e58, type: 3}
+  - {fileID: 2800000, guid: a06930ae61a3740cc8ddf1ce2485a982, type: 3}
+  - {fileID: 2800000, guid: e70ee64df4c45473385784baabf853be, type: 3}
+  - {fileID: 2800000, guid: 42ebd1b92c8b448a0898855cc2c433be, type: 3}
+  - {fileID: 2800000, guid: 19d75864cb0134fdaad2d5cd6f656b91, type: 3}
   m_memorizeMaterial: {fileID: 2100000, guid: 36f962adaf04b497f94380b58ddcaac2, type: 2}
   m_levelRequiresCorrectCubeOrientation: 000100
   m_backgroundPlane: {fileID: 855723102}
