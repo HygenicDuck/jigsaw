@@ -7,7 +7,7 @@ using System.Collections.Generic;
 public class GameController : MonoBehaviour
 {
 	const int NUM_FACES_ON_A_CUBE = 6;
-	const bool CHOOSE_ANOTHER_FACE_AFTER_EACH_WRONG_ANSWER = true;
+	const bool CHOOSE_ANOTHER_FACE_AFTER_EACH_WRONG_ANSWER = false;
 
 	FaceState m_requiredFace;
 	int m_score = 0;
@@ -97,6 +97,7 @@ public class GameController : MonoBehaviour
 	}
 
 
+
 	void GenerateMaterialsFromTextures()
 	{
 		foreach (Texture t in m_faceTextures) {
@@ -105,7 +106,6 @@ public class GameController : MonoBehaviour
 			m_faceMaterialsList.Add (m);
 		}
 	}
-
 
 	void StartMoveSequence()
 	{
@@ -331,9 +331,17 @@ public class GameController : MonoBehaviour
 		yield return new WaitForSeconds(0.5f);
 		m_cube.GetComponent<Cube>().ResetAnimation();
 
-		if (CHOOSE_ANOTHER_FACE_AFTER_EACH_WRONG_ANSWER) {
+		if (CHOOSE_ANOTHER_FACE_AFTER_EACH_WRONG_ANSWER) 
+		{
+			// you've chosen the wrong face. Now we choose another face to find that is adjacent to this one.
 			m_requiredFace = GetNextRequiredFace (GetNextMoveInSequence ());
 			yield return ChangeRequiredFaceCoroutine ();
+		}
+		else
+		{
+			// go back to the face we were looking at before you got it wrong
+			Rotator.Instance.ReversePreviousRotation();
+			yield return new WaitForSeconds(0.5f);
 		}
 	}
 
@@ -434,12 +442,12 @@ public class GameController : MonoBehaviour
 			levelNum = m_gameStateClass.GetLevelNumber();
 		}
 
-		m_cubeMaterialMappings[0] = (levelNum * NUM_FACES_ON_A_CUBE) + 0;
-        m_cubeMaterialMappings[1] = (levelNum * NUM_FACES_ON_A_CUBE) + 1;
-		m_cubeMaterialMappings[2] = (levelNum * NUM_FACES_ON_A_CUBE) + 2;
-		m_cubeMaterialMappings[3] = (levelNum * NUM_FACES_ON_A_CUBE) + 4;
-		m_cubeMaterialMappings[4] = (levelNum * NUM_FACES_ON_A_CUBE) + 3;
-		m_cubeMaterialMappings[5] = (levelNum * NUM_FACES_ON_A_CUBE) + 5;
+		m_cubeMaterialMappings[0] = (levelNum * NUM_FACES_ON_A_CUBE) + 1;	// + 0;
+		m_cubeMaterialMappings[1] = (levelNum * NUM_FACES_ON_A_CUBE) + 2;	// + 1;
+		m_cubeMaterialMappings[2] = (levelNum * NUM_FACES_ON_A_CUBE) + 5;	// + 2;
+		m_cubeMaterialMappings[3] = (levelNum * NUM_FACES_ON_A_CUBE) + 3;	// + 4;
+		m_cubeMaterialMappings[4] = (levelNum * NUM_FACES_ON_A_CUBE) + 0;	// + 3;
+		m_cubeMaterialMappings[5] = (levelNum * NUM_FACES_ON_A_CUBE) + 4;	// + 5;
 	}
 
 	void ApplyMaterialsToCube()

@@ -19,16 +19,35 @@ public class Rotator : MessagingManager {
 	bool m_linearInterpolation;
 	private AudioSource m_audioSource;
 	bool m_rotationBlocked = false;
+	CubeState.RotationActions m_lastRotation = CubeState.RotationActions.NONE;
 
 	[SerializeField] 
 	CubeState m_cubeState;
 	[SerializeField] 
 	AudioClip m_sfxCubeRotate;
 
+	static Rotator m_instance = null;
+
+
+	public static Rotator Instance
+	{
+		get
+		{
+			return m_instance;
+		}
+	}
+
+	public Rotator()
+	{
+		m_instance = this;
+	}
+
+
 	// Use this for initialization
 	void Start () {
 		m_isRotating = false;
 		m_rotationBlocked = false;
+		m_lastRotation = CubeState.RotationActions.NONE;
 
 		TouchSwipeDetector.Instance.StartListening("SWIPE_LEFT", RotateLeft);
 		TouchSwipeDetector.Instance.StartListening("SWIPE_RIGHT", RotateRight);
@@ -105,12 +124,40 @@ public class Rotator : MessagingManager {
 		m_audioSource.PlayOneShot(m_sfxCubeRotate, 1f);
 	}
 
+	public void ReversePreviousRotation()
+	{
+		switch(m_lastRotation)
+		{
+		case CubeState.RotationActions.LEFT:
+			RotateRight();
+			break;
+		case CubeState.RotationActions.RIGHT:
+			RotateLeft();
+			break;
+		case CubeState.RotationActions.UP:
+			RotateDown();
+			break;
+		case CubeState.RotationActions.DOWN:
+			RotateUp();
+			break;
+		case CubeState.RotationActions.CLOCKWISE:
+			RotateAntiClockwise();
+			break;
+		case CubeState.RotationActions.ANTI_CLOCKWISE:
+			RotateClockwise();
+			break;
+		}
+
+		m_lastRotation = CubeState.RotationActions.NONE;
+	}
+
 	public void RotateLeft()
 	{
 		if (!m_isRotating && !m_rotationBlocked)
 		{
 			Rotate90Degrees(1, Axis.Y, 0.3f);
 			m_cubeState.DoRotation(CubeState.RotationActions.LEFT);
+			m_lastRotation = CubeState.RotationActions.LEFT;
 		}
 	}
 
@@ -120,6 +167,7 @@ public class Rotator : MessagingManager {
 		{
 			Rotate90Degrees(-1, Axis.Y, 0.3f);
 			m_cubeState.DoRotation(CubeState.RotationActions.RIGHT);
+			m_lastRotation = CubeState.RotationActions.RIGHT;
 		}
 	}
 
@@ -129,6 +177,7 @@ public class Rotator : MessagingManager {
 		{
 			Rotate90Degrees(1, Axis.X, 0.3f);
 			m_cubeState.DoRotation(CubeState.RotationActions.UP);
+			m_lastRotation = CubeState.RotationActions.UP;
 		}
 	}
 
@@ -138,6 +187,7 @@ public class Rotator : MessagingManager {
 		{
 			Rotate90Degrees(-1, Axis.X, 0.3f);
 			m_cubeState.DoRotation(CubeState.RotationActions.DOWN);
+			m_lastRotation = CubeState.RotationActions.DOWN;
 		}
 	}
 
@@ -147,6 +197,7 @@ public class Rotator : MessagingManager {
 		{
 			Rotate90Degrees(-1, Axis.Z, 0.3f);
 			m_cubeState.DoRotation(CubeState.RotationActions.CLOCKWISE);
+			m_lastRotation = CubeState.RotationActions.CLOCKWISE;
 		}
 	}
 
@@ -156,6 +207,7 @@ public class Rotator : MessagingManager {
 		{
 			Rotate90Degrees(1, Axis.Z, 0.3f);
 			m_cubeState.DoRotation(CubeState.RotationActions.ANTI_CLOCKWISE);
+			m_lastRotation = CubeState.RotationActions.ANTI_CLOCKWISE;
 		}
 	}
 

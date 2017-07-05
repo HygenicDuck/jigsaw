@@ -76,7 +76,8 @@ public class CubeState : MonoBehaviour
 		LEFT,
 		RIGHT,
 		CLOCKWISE,
-		ANTI_CLOCKWISE
+		ANTI_CLOCKWISE,
+		NONE
 	};
 		
 	public static RotationActions[] m_flipHorizontally = { RotationActions.UP, RotationActions.DOWN, RotationActions.RIGHT, RotationActions.LEFT, RotationActions.ANTI_CLOCKWISE, RotationActions.CLOCKWISE };

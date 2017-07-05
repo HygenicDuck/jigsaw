@@ -46,7 +46,7 @@ public class GameStateClass {
 
 	public int GetLevelNumber()
 	{
-		return 0;	//m_levelNumber;
+		return 2;	//m_levelNumber;
 	}
 
     public void CompletedLevel(int score)

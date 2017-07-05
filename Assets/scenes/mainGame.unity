@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.45138234, g: 0.50091714, b: 0.57257694, a: 1}
+  m_IndirectSpecularColor: {r: 0.45140082, g: 0.5009341, b: 0.57258713, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -2642,48 +2642,29 @@ MonoBehaviour:
   m_levelCompleteText: {fileID: 348782556}
   m_perfectText: {fileID: 521161607}
   m_levelUnlockedText: {fileID: 991896508}
-  m_prototypeFaceMaterial: {fileID: 2100000, guid: fec5cebaa561a7f4cb45fa323be7f7e3,
+  m_prototypeFaceMaterial: {fileID: 2100000, guid: 6a58c7578f18247a383ea641871cb655,
     type: 2}
-  m_faceMaterials:
-  - {fileID: 2100000, guid: abd2313c2ad9e4551b08f577a72cb032, type: 2}
-  - {fileID: 2100000, guid: 36f962adaf04b497f94380b58ddcaac2, type: 2}
-  - {fileID: 2100000, guid: 376195e83a2c64ea980f9e72d4f6b147, type: 2}
-  - {fileID: 2100000, guid: a2a6aaa46a3b84ead9aa3a3ca86648e7, type: 2}
-  - {fileID: 2100000, guid: b582c7cd7ab1f4be0879056a6f105f39, type: 2}
-  - {fileID: 2100000, guid: b7175bdf40a974d3f94f654050cbb1f2, type: 2}
-  - {fileID: 2100000, guid: f1675bc7a223842a6a239179c6808315, type: 2}
-  - {fileID: 2100000, guid: e80b6b90893a94e1dab70ff5872e7ad9, type: 2}
-  - {fileID: 2100000, guid: f9435dd4306be4b97be054f4be363c05, type: 2}
-  - {fileID: 2100000, guid: c03cc019d6b784fd6b31eb0cf99f67a4, type: 2}
-  - {fileID: 2100000, guid: 63ce00e39d7494c6d824c837b50132b1, type: 2}
-  - {fileID: 2100000, guid: 327b7b7988352499c9402d187182c992, type: 2}
-  - {fileID: 2100000, guid: 076b84fc45717421a9f94a8999403496, type: 2}
-  - {fileID: 2100000, guid: 2feab0b9c205d4b2e9eaac87b41f2d64, type: 2}
-  - {fileID: 2100000, guid: 6a972eba432ee4c249cdbcf431618b4f, type: 2}
-  - {fileID: 2100000, guid: ff9867e49920248fb82ba33dea57f43e, type: 2}
-  - {fileID: 2100000, guid: 16ffc94de04c047409b698395c4cced0, type: 2}
-  - {fileID: 2100000, guid: ecf5ccb99d1be4fddab485db823fc5ae, type: 2}
   m_faceMaterialsList: []
   m_faceTextures:
-  - {fileID: 2800000, guid: 3b92e71e5cd8949ffaae4a640ee82820, type: 3}
-  - {fileID: 2800000, guid: b7f62d41063c6460aad72c728d14e6ad, type: 3}
-  - {fileID: 2800000, guid: 8b0950a20fc5941d88ffbb282e2b7220, type: 3}
-  - {fileID: 2800000, guid: da2c544f8bc514d72b94f8ade0f23e4d, type: 3}
-  - {fileID: 2800000, guid: 40eb84cf043994755a6d12327c1a58c5, type: 3}
-  - {fileID: 2800000, guid: c756e961ccd024b12b2150eb7c39f83d, type: 3}
-  - {fileID: 2800000, guid: bb6be6174a4d44fc5a3a89a7f95b017b, type: 3}
-  - {fileID: 2800000, guid: 0b3fda14dd0e747f6a923911b35e13f5, type: 3}
-  - {fileID: 2800000, guid: cffd25313f20544df9644888838694af, type: 3}
-  - {fileID: 2800000, guid: a947cdfe740614164aae1c1d295abe62, type: 3}
-  - {fileID: 2800000, guid: ecec62c1195174df8bf9401a34630924, type: 3}
-  - {fileID: 2800000, guid: 690822699754c4a8f8d90f8b42f44e09, type: 3}
-  - {fileID: 2800000, guid: 502ab23a1e46f41fd9a742a85af88591, type: 3}
-  - {fileID: 2800000, guid: 7adaf9e82fb6743f994892075b132e58, type: 3}
-  - {fileID: 2800000, guid: a06930ae61a3740cc8ddf1ce2485a982, type: 3}
-  - {fileID: 2800000, guid: e70ee64df4c45473385784baabf853be, type: 3}
-  - {fileID: 2800000, guid: 42ebd1b92c8b448a0898855cc2c433be, type: 3}
-  - {fileID: 2800000, guid: 19d75864cb0134fdaad2d5cd6f656b91, type: 3}
-  m_memorizeMaterial: {fileID: 2100000, guid: 36f962adaf04b497f94380b58ddcaac2, type: 2}
+  - {fileID: 2800000, guid: 7961b8f023cdc4ffaaab4e20420024b1, type: 3}
+  - {fileID: 2800000, guid: 2cd8defc4461b47259a7ba027aee9856, type: 3}
+  - {fileID: 2800000, guid: c18b3db2e83664e90ac467a4e7642541, type: 3}
+  - {fileID: 2800000, guid: 9632949d3de444d65950af63ece3124c, type: 3}
+  - {fileID: 2800000, guid: 0bec349e84bee4120b7e05542cca4b8a, type: 3}
+  - {fileID: 2800000, guid: 295ab9d411b534409838603aa230678c, type: 3}
+  - {fileID: 2800000, guid: 85710fedf74f54a229dc2f8e44f7ef8d, type: 3}
+  - {fileID: 2800000, guid: ae1462c8a285140a0b16574c5be67c59, type: 3}
+  - {fileID: 2800000, guid: b1b9418b1df0343daa74ebe04b012d07, type: 3}
+  - {fileID: 2800000, guid: b300bb34749e34933846e69935ff10ac, type: 3}
+  - {fileID: 2800000, guid: 6524da790ddc04d9483c5987a345769f, type: 3}
+  - {fileID: 2800000, guid: ce1d0f3015bcf4e13a5b02abd961bb79, type: 3}
+  - {fileID: 2800000, guid: b02d11ba9e8194a2f88755f648bb1ece, type: 3}
+  - {fileID: 2800000, guid: a22ed14f1347e4c35808b08008790265, type: 3}
+  - {fileID: 2800000, guid: aef01c46775da4334ab7abe32eaf4863, type: 3}
+  - {fileID: 2800000, guid: 8c2c5673aa9a3424783163b44a162cde, type: 3}
+  - {fileID: 2800000, guid: 9cb627ab35f7f4d719d80438432e5def, type: 3}
+  - {fileID: 2800000, guid: 33750ff80da364ad2a8396eef815df71, type: 3}
+  m_memorizeMaterial: {fileID: 2100000, guid: 5812a64e8611d8946a490e9c64d58160, type: 2}
   m_levelRequiresCorrectCubeOrientation: 000100
   m_backgroundPlane: {fileID: 855723102}
   m_ImReadyButton: {fileID: 788124704}
