@@ -19,7 +19,7 @@ public class Rotator : MessagingManager {
 	bool m_linearInterpolation;
 	private AudioSource m_audioSource;
 	bool m_rotationBlocked = false;
-	CubeState.RotationActions m_lastRotation = CubeState.RotationActions.NONE;
+	CubeState.RotationActions m_lastRotation = CubeState.RotationActions.ANTI_CLOCKWISE;
 
 	[SerializeField] 
 	CubeState m_cubeState;
@@ -27,7 +27,7 @@ public class Rotator : MessagingManager {
 	AudioClip m_sfxCubeRotate;
 
 	static Rotator m_instance = null;
-
+	static int count = 0;
 
 	public static Rotator Instance
 	{
@@ -39,6 +39,7 @@ public class Rotator : MessagingManager {
 
 	public Rotator()
 	{
+		Debug.Log ("Rotator constructor "+(count++));
 		m_instance = this;
 	}
 
@@ -47,6 +48,8 @@ public class Rotator : MessagingManager {
 	void Start () {
 		m_isRotating = false;
 		m_rotationBlocked = false;
+
+		Debug.Log ("Rotator start");
 		m_lastRotation = CubeState.RotationActions.NONE;
 
 		TouchSwipeDetector.Instance.StartListening("SWIPE_LEFT", RotateLeft);
@@ -121,11 +124,15 @@ public class Rotator : MessagingManager {
 		m_moveDuration = time;
 		m_isRotating = true;
 
-		m_audioSource.PlayOneShot(m_sfxCubeRotate, 1f);
+		if (GameController.Instance.State == GameController.GameState.FIND) 
+		{
+			m_audioSource.PlayOneShot (m_sfxCubeRotate, 1f);
+		}
 	}
 
 	public void ReversePreviousRotation()
 	{
+		Debug.Log ("ReversePreviousRotation "+m_lastRotation);
 		switch(m_lastRotation)
 		{
 		case CubeState.RotationActions.LEFT:
@@ -158,6 +165,7 @@ public class Rotator : MessagingManager {
 			Rotate90Degrees(1, Axis.Y, 0.3f);
 			m_cubeState.DoRotation(CubeState.RotationActions.LEFT);
 			m_lastRotation = CubeState.RotationActions.LEFT;
+			Debug.Log ("RotateLeft");
 		}
 	}
 
@@ -168,6 +176,7 @@ public class Rotator : MessagingManager {
 			Rotate90Degrees(-1, Axis.Y, 0.3f);
 			m_cubeState.DoRotation(CubeState.RotationActions.RIGHT);
 			m_lastRotation = CubeState.RotationActions.RIGHT;
+			Debug.Log ("RotateRight");
 		}
 	}
 
@@ -178,6 +187,7 @@ public class Rotator : MessagingManager {
 			Rotate90Degrees(1, Axis.X, 0.3f);
 			m_cubeState.DoRotation(CubeState.RotationActions.UP);
 			m_lastRotation = CubeState.RotationActions.UP;
+			Debug.Log ("RotateUp");
 		}
 	}
 
@@ -188,6 +198,7 @@ public class Rotator : MessagingManager {
 			Rotate90Degrees(-1, Axis.X, 0.3f);
 			m_cubeState.DoRotation(CubeState.RotationActions.DOWN);
 			m_lastRotation = CubeState.RotationActions.DOWN;
+			Debug.Log ("RotateDown");
 		}
 	}
 

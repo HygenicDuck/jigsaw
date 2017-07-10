@@ -75,15 +75,39 @@ public class GameController : MonoBehaviour
 	int m_sequenceStartPosition = 0;
 
 
-	enum GameState
+	public enum GameState
 	{
 		MEMORIZE,
 		ROTATE_CUBE_INTO_POSITION,
 		SHOW_REQUIRED_FACE,
-		FIND
+		FIND,
+		ROTATE_BACK_TO_PREVIOUS
 	}
 
 	GameState m_currentGameState;
+
+	public GameState State
+	{
+		get
+		{
+			return m_currentGameState;
+		}
+	}
+
+	static GameController m_instance = null;
+
+	public static GameController Instance
+	{
+		get
+		{
+			return m_instance;
+		}
+	}
+
+	public GameController()
+	{
+		m_instance = this;
+	}
 
 	void Start()
 	{
@@ -340,9 +364,14 @@ public class GameController : MonoBehaviour
 		else
 		{
 			// go back to the face we were looking at before you got it wrong
-			Rotator.Instance.ReversePreviousRotation();
-			yield return new WaitForSeconds(0.5f);
+			SwitchToState(GameState.ROTATE_BACK_TO_PREVIOUS);
+			//yield return new WaitForSeconds(0.5f);
 		}
+	}
+
+	void FinishedRotatingBackToPrevious()
+	{
+		SwitchToState(GameState.FIND);
 	}
 
 	void IncrementScore()
@@ -362,6 +391,8 @@ public class GameController : MonoBehaviour
 	{
 		Rotator rotator;
 		rotator = m_cube.GetComponentInChildren<Rotator>();
+
+		m_currentGameState = state;
 
 		switch(state)
 		{
@@ -384,19 +415,23 @@ public class GameController : MonoBehaviour
 			RotateCubeToStartPosition();
 			break;
 		case GameState.FIND:
-            StartMoveSequence();
-            m_requiredFace = GetNextRequiredFace(GetNextMoveInSequence());
-            //PickRandomRequiredFace();
-            DisplayRequiredFace();
-
             // enable controls
             m_freeRotation.enabled = false;
 			m_touchSwipeDetector.enabled = true;
+			rotator.StopListening("ROTATION_COMPLETE", FinishedRotatingBackToPrevious);
 			rotator.StartListening("ROTATION_COMPLETE", CheckIfCorrect);
+			break;
+		case GameState.ROTATE_BACK_TO_PREVIOUS:
+			// rotate cube to initial position
+			m_freeRotation.enabled = false;
+			m_touchSwipeDetector.enabled = false;
+			m_memorizeText.SetActive(false);
+			rotator.StopListening("ROTATION_COMPLETE", CheckIfCorrect);
+			rotator.StartListening("ROTATION_COMPLETE", FinishedRotatingBackToPrevious);
+			rotator.ReversePreviousRotation();
 			break;
 		}
 
-		m_currentGameState = state;
 	}
 
 	IEnumerator ShowImReadyButtonAfterDelay()
@@ -425,6 +460,12 @@ public class GameController : MonoBehaviour
 	IEnumerator WaitForRotateCubeToStartPosition()
 	{
 		yield return new WaitForSeconds(1.5f);
+
+		StartMoveSequence();
+		m_requiredFace = GetNextRequiredFace(GetNextMoveInSequence());
+		//PickRandomRequiredFace();
+		DisplayRequiredFace();
+
 		SwitchToState(GameState.FIND);
 	}
 

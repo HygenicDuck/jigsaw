@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class GameStateClass {
+public class GameStateClass : MonoBehaviour {	//: ScriptableObject {
 
 	public static int NUMBER_OF_LEVELS = 5;
 	public bool[] m_unlockedLevels = new bool[NUMBER_OF_LEVELS];
@@ -13,24 +13,35 @@ public class GameStateClass {
     {
         get
         {
-			if (m_instance == null) {
-				m_instance = new GameStateClass();
-			}
+//			if (m_instance == null) {
+//				m_instance = new GameStateClass();
+//			}
             return m_instance;
         }
     }
 
     public GameStateClass()
     {
-        m_instance = this;
+		Debug.Log ("GameStateClass constructor");
+//		if (m_instance == null) 
+//		{
+//        	m_instance = this;
+//		}
     }
 
     // Use this for initialization
-    void Start () {
+    void Start () 
+	{
+//		if (m_instance != this) 
+//		{
+//			transform.parent = null;
+//			Destroy(gameObject);
+//		}
 	}
 
 	public void Initialise()
 	{
+		m_instance = this;
 		m_unlockedLevels[0] = true;
 	}
 	

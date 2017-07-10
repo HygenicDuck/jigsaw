@@ -12,14 +12,22 @@ public class FrontEnd : MonoBehaviour {
 	public Sprite m_levelLockedPadlock;
 	[SerializeField]
 	public Sprite[] m_levelIcons;
+	[SerializeField]
+	public GameObject m_persistantObjectPrefab;
 
 
     // Use this for initialization
     void Start ()
     {
-		Debug.Log ("FrontEnd Start ");
+		Debug.Log ("FrontEnd Start "+GameStateClass.Instance);
 
-		GameStateClass.Instance.Initialise ();
+		if (GameStateClass.Instance == null) 
+		{
+			Debug.Log ("Instantiate "+GameStateClass.Instance);
+			GameObject g = Instantiate (m_persistantObjectPrefab, transform.parent);
+			GameStateClass gameStateClass = g.GetComponent<GameStateClass> ();
+			gameStateClass.Initialise ();
+		}
 
 		for (int i = 0; i < GameStateClass.NUMBER_OF_LEVELS; i++)
         {
