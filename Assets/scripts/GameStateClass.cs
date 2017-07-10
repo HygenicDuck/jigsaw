@@ -1,9 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.IO;
 
-public class GameStateClass : MonoBehaviour {	//: ScriptableObject {
+public class GameStateClass : MonoBehaviour 
+{
 
-	public static int NUMBER_OF_LEVELS = 5;
+	public static int NUMBER_OF_LEVELS = 15;
 	public bool[] m_unlockedLevels = new bool[NUMBER_OF_LEVELS];
 	int m_levelNumber;
     static GameStateClass m_instance = null;
@@ -13,30 +15,17 @@ public class GameStateClass : MonoBehaviour {	//: ScriptableObject {
     {
         get
         {
-//			if (m_instance == null) {
-//				m_instance = new GameStateClass();
-//			}
             return m_instance;
         }
     }
 
     public GameStateClass()
     {
-		Debug.Log ("GameStateClass constructor");
-//		if (m_instance == null) 
-//		{
-//        	m_instance = this;
-//		}
     }
 
     // Use this for initialization
     void Start () 
 	{
-//		if (m_instance != this) 
-//		{
-//			transform.parent = null;
-//			Destroy(gameObject);
-//		}
 	}
 
 	public void Initialise()
@@ -73,5 +62,29 @@ public class GameStateClass : MonoBehaviour {	//: ScriptableObject {
 			}
 		}
     }
+
+
+	//AGTEMP - untested code below. There must be a better way
+	// (e.g. make a simple class to contain just 1 int, which is the highest
+	// level unlocked. Serialize that to json.)
+
+	void SaveProgressToFile()
+	{
+		string json = JsonUtility.ToJson (this);
+		string path = Application.persistentDataPath + "/savefile.json";
+		StreamWriter writer = new StreamWriter (path, false);
+		writer.WriteLine (json);
+		writer.Close ();
+	}
+
+	void LoadProgressFromFile()
+	{
+		string path = Application.persistentDataPath + "/savefile.json";
+		StreamReader reader = new StreamReader (path);
+		string json = reader.ReadToEnd ();
+		GameStateClass gs = JsonUtility.FromJson<GameStateClass> (json);
+		m_unlockedLevels = gs.m_unlockedLevels;
+		reader.Close ();
+	}
 
 }

@@ -19,11 +19,8 @@ public class FrontEnd : MonoBehaviour {
     // Use this for initialization
     void Start ()
     {
-		Debug.Log ("FrontEnd Start "+GameStateClass.Instance);
-
 		if (GameStateClass.Instance == null) 
 		{
-			Debug.Log ("Instantiate "+GameStateClass.Instance);
 			GameObject g = Instantiate (m_persistantObjectPrefab, transform.parent);
 			GameStateClass gameStateClass = g.GetComponent<GameStateClass> ();
 			gameStateClass.Initialise ();
