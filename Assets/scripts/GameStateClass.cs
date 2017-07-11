@@ -32,6 +32,7 @@ public class GameStateClass : MonoBehaviour
 	{
 		m_instance = this;
 		m_unlockedLevels[0] = true;
+		LoadProgressFromFile();
 	}
 	
 	// Update is called once per frame
@@ -46,19 +47,22 @@ public class GameStateClass : MonoBehaviour
 
 	public int GetLevelNumber()
 	{
-		return 2;	//m_levelNumber;
+		return m_levelNumber;
 	}
 
     public void CompletedLevel(int score)
     {
 		Debug.Log ("CompletedLevel "+score+", "+m_levelNumber);
         // TODO - unlock the next level if the score was 6 (i.e. did it perfectly)
-		if (score == 0) {
+		if (score == 0) 
+		{
 			Debug.Log ("CompletedLevel 2 "+score+", "+m_levelNumber);
 
-			if (m_levelNumber + 1 < NUMBER_OF_LEVELS) {
-					Debug.Log ("CompletedLevel 3 "+score+", "+m_levelNumber);
-					m_unlockedLevels [m_levelNumber + 1] = true;
+			if (m_levelNumber + 1 < NUMBER_OF_LEVELS) 
+			{
+				Debug.Log ("CompletedLevel 3 "+score+", "+m_levelNumber);
+				m_unlockedLevels [m_levelNumber + 1] = true;
+				SaveProgressToFile();
 			}
 		}
     }
@@ -68,23 +72,52 @@ public class GameStateClass : MonoBehaviour
 	// (e.g. make a simple class to contain just 1 int, which is the highest
 	// level unlocked. Serialize that to json.)
 
+	public class SaveClass
+	{
+		public int levelReached;
+	}
+
 	void SaveProgressToFile()
 	{
-		string json = JsonUtility.ToJson (this);
+		Debug.Log("SaveProgressToFile 1");
+		SaveClass saveClass = new SaveClass();
+		for(int i=0; i<NUMBER_OF_LEVELS; i++)
+		{
+			if (m_unlockedLevels[i])
+			{
+				saveClass.levelReached = i;
+			}
+		}
+		Debug.Log("SaveProgressToFile 2");
+
+		string json = JsonUtility.ToJson (saveClass);
 		string path = Application.persistentDataPath + "/savefile.json";
 		StreamWriter writer = new StreamWriter (path, false);
+		Debug.Log("SaveProgressToFile 3");
+
 		writer.WriteLine (json);
 		writer.Close ();
+		Debug.Log("SaveProgressToFile 4");
+
 	}
 
 	void LoadProgressFromFile()
 	{
 		string path = Application.persistentDataPath + "/savefile.json";
-		StreamReader reader = new StreamReader (path);
-		string json = reader.ReadToEnd ();
-		GameStateClass gs = JsonUtility.FromJson<GameStateClass> (json);
-		m_unlockedLevels = gs.m_unlockedLevels;
-		reader.Close ();
+		if (System.IO.File.Exists(path))
+		{
+			StreamReader reader = new StreamReader (path);
+			string json = reader.ReadToEnd ();
+			reader.Close ();
+			if (json != null)
+			{
+				SaveClass saveClass = JsonUtility.FromJson<SaveClass> (json);
+				for(int i=0; i<NUMBER_OF_LEVELS; i++)
+				{
+					m_unlockedLevels[i] = (i <= saveClass.levelReached);
+				}
+			}
+		}
 	}
 
 }
