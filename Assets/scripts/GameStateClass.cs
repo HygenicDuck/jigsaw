@@ -7,8 +7,10 @@ public class GameStateClass : MonoBehaviour
 
 	public static int NUMBER_OF_LEVELS = 15;
 	public bool[] m_unlockedLevels = new bool[NUMBER_OF_LEVELS];
+	public bool[] m_shownTutorials = new bool[(int)TutorialManager.MessageID.LAST];
 	int m_levelNumber;
     static GameStateClass m_instance = null;
+	bool m_swipeTutorialHasBeenShown = false;
 
 
     public static GameStateClass Instance
@@ -52,20 +54,34 @@ public class GameStateClass : MonoBehaviour
 
     public void CompletedLevel(int livesUsed)
     {
-//		Debug.Log ("CompletedLevel "+livesUsed+", "+m_levelNumber);
-//        // TODO - unlock the next level if the score was 6 (i.e. did it perfectly)
-//		if (livesUsed == 0) 
-//		{
-			Debug.Log ("CompletedLevel 2 "+livesUsed+", "+m_levelNumber);
+		Debug.Log ("CompletedLevel "+livesUsed+", "+m_levelNumber);
 
-			if (m_levelNumber + 1 < NUMBER_OF_LEVELS) 
-			{
-				Debug.Log ("CompletedLevel 3 "+livesUsed+", "+m_levelNumber);
-				m_unlockedLevels [m_levelNumber + 1] = true;
-				SaveProgressToFile();
-			}
-//		}
+		if (m_levelNumber + 1 < NUMBER_OF_LEVELS) 
+		{
+			m_unlockedLevels [m_levelNumber + 1] = true;
+			SaveProgressToFile();
+		}
     }
+
+	public void ShownTutorial (TutorialManager.MessageID tutorialID)
+	{
+		int i = (int)tutorialID;
+		if (i < m_shownTutorials.Length) 
+		{
+			m_shownTutorials [i] = true;
+		}
+	}
+
+	public bool HasTutorialBeenShown(TutorialManager.MessageID tutorialID)
+	{
+		int i = (int)tutorialID;
+		if (i < m_shownTutorials.Length) 
+		{
+			return m_shownTutorials [i];
+		}
+
+		return false;
+	}
 
 
 	//AGTEMP - untested code below. There must be a better way

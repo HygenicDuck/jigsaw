@@ -1109,6 +1109,46 @@ Prefab:
       propertyPath: m_Name
       value: Tutorial swipe to rotate
       objectReference: {fileID: 0}
+    - target: {fileID: 224412259456613740, guid: f0b240ef9fe8dfa4589c5c71c8ad4f3e,
+        type: 2}
+      propertyPath: m_AnchoredPosition.y
+      value: -233
+      objectReference: {fileID: 0}
+    - target: {fileID: 4698840920218734, guid: f0b240ef9fe8dfa4589c5c71c8ad4f3e, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: -253
+      objectReference: {fileID: 0}
+    - target: {fileID: 4698840920218734, guid: f0b240ef9fe8dfa4589c5c71c8ad4f3e, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4391771849769402, guid: f0b240ef9fe8dfa4589c5c71c8ad4f3e, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4391771849769402, guid: f0b240ef9fe8dfa4589c5c71c8ad4f3e, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 176
+      objectReference: {fileID: 0}
+    - target: {fileID: 224412421962274980, guid: f0b240ef9fe8dfa4589c5c71c8ad4f3e,
+        type: 2}
+      propertyPath: m_AnchoredPosition.y
+      value: -314
+      objectReference: {fileID: 0}
+    - target: {fileID: 114625864212651658, guid: f0b240ef9fe8dfa4589c5c71c8ad4f3e,
+        type: 2}
+      propertyPath: m_handDownDistance
+      value: -20
+      objectReference: {fileID: 0}
+    - target: {fileID: 114463785758321414, guid: f0b240ef9fe8dfa4589c5c71c8ad4f3e,
+        type: 2}
+      propertyPath: m_Text
+      value: Swipe across the screen to rotate the cube
+      objectReference: {fileID: 0}
+    - target: {fileID: 1120924385513576, guid: f0b240ef9fe8dfa4589c5c71c8ad4f3e, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: f0b240ef9fe8dfa4589c5c71c8ad4f3e, type: 2}
   m_IsPrefabParent: 0

@@ -137,12 +137,24 @@ public class GameController : MonoBehaviour
 
 	void StartMoveSequence()
 	{
-		// set up everything for the start of a new sequence of 6 moves
-		m_sequenceType = Random.Range(0,2);
-        m_sequenceStartPosition = Random.Range(0,6);
-		m_sequencePosition = m_sequenceStartPosition;
-		m_flipSequenceHorizontally = Random.value < 0.5f;
-		m_flipSequenceVertically = Random.value < 0.5f;
+		if ((m_gameStateClass != null) && (m_gameStateClass.GetLevelNumber() == 0))	// && !m_gameStateClass.HasTutorialBeenShown (TutorialManager.MessageID.SWIPE_TO_ROTATE)) 
+		{
+			// predetermined sequence for the first ever play, so that the tutorial message matches with what your supposed to do.
+			m_sequenceType = 0;
+			m_sequenceStartPosition = 0;
+			m_sequencePosition = m_sequenceStartPosition;
+			m_flipSequenceHorizontally = false;
+			m_flipSequenceVertically = false;
+		} 
+		else 
+		{	
+			// set up everything for the start of a new sequence of 6 moves
+			m_sequenceType = Random.Range (0, 2);
+			m_sequenceStartPosition = Random.Range (0, 6);
+			m_sequencePosition = m_sequenceStartPosition;
+			m_flipSequenceHorizontally = Random.value < 0.5f;
+			m_flipSequenceVertically = Random.value < 0.5f;
+		}
 	}
 
 	CubeState.RotationActions GetNextMoveInSequence()
@@ -328,6 +340,8 @@ public class GameController : MonoBehaviour
 
     void CheckIfCorrect()
 	{
+		TutorialManager.Instance.ClearAllTutorialMessages ();
+
 		FaceStates faceStates = m_cubeOrientation.GetFaceStates();
 		if (!m_cubeState.CheckState(faceStates))
         {
@@ -489,6 +503,11 @@ public class GameController : MonoBehaviour
 		m_requiredFace = GetNextRequiredFace(GetNextMoveInSequence());
 		//PickRandomRequiredFace();
 		DisplayRequiredFace();
+
+		if ((m_gameStateClass != null) && (m_gameStateClass.GetLevelNumber () == 0)) // && !m_gameStateClass.HasTutorialBeenShown (TutorialManager.MessageID.SWIPE_TO_ROTATE)) 
+		{
+			TutorialManager.Instance.ShowTutorialMessage (TutorialManager.MessageID.SWIPE_TO_ROTATE);
+		}
 
 		SwitchToState(GameState.FIND);
 	}

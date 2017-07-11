@@ -51,7 +51,7 @@ public class TutorialHand : MonoBehaviour {
 
         while (true)
         {
-            Vector3 startPos = m_startPoint.transform.position - new Vector3(0f, m_handDownDistance, 0f);
+			Vector3 startPos = m_startPoint.transform.position;	// - new Vector3(0f, m_handDownDistance, 0f);
             handMover.SetPosition(startPos);
             handSpriteMover.MoveBy(new Vector3(0, m_handDownDistance, 0f), m_handDownTime);
             yield return new WaitForSeconds(m_handDownTime);

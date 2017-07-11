@@ -7,16 +7,30 @@ public class TutorialManager : MonoBehaviour {
     [SerializeField]
     GameObject[] m_tutorialRoots;
 
-    public enum MessageID
-    {
-        SWIPE_TO_ROTATE = 0,
-        SWIPE_TO_SPIN
-    }
+	static TutorialManager m_instance = null;
+
+	public enum MessageID
+	{
+		SWIPE_TO_ROTATE = 0,
+		SWIPE_TO_SPIN,
+		LAST
+	}
+
+	public static TutorialManager Instance
+	{
+		get
+		{
+			return m_instance;
+		}
+	}
+
+
 
 
 	// Use this for initialization
 	void Start ()
     {
+		m_instance = this;
         ClearAllTutorialMessages();
     }
 	
@@ -27,10 +41,15 @@ public class TutorialManager : MonoBehaviour {
 
     public void ShowTutorialMessage(MessageID tutorialID)
     {
-        for(int i=0; i<m_tutorialRoots.Length; i++)
-        {
-            m_tutorialRoots[i].SetActive(i == (int)tutorialID);
-        }
+		if (!GameStateClass.Instance.HasTutorialBeenShown (tutorialID)) 
+		{
+			for (int i = 0; i < m_tutorialRoots.Length; i++) 
+			{
+				m_tutorialRoots [i].SetActive (i == (int)tutorialID);
+			}
+
+			GameStateClass.Instance.ShownTutorial (tutorialID);
+		}
     }
 
     public void ClearAllTutorialMessages()
