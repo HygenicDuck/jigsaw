@@ -39,6 +39,8 @@ public class GameController : MonoBehaviour
 	GameObject m_levelUnlockedText;
 	[SerializeField]
 	GameObject m_gameOverText;
+	[SerializeField]
+	GameObject m_gameOverButtons;
 
 	[SerializeField] 
 	Material m_prototypeFaceMaterial;
@@ -390,8 +392,7 @@ public class GameController : MonoBehaviour
 		{
 			m_gameOverText.SetActive(true);
 			yield return new WaitForSeconds(1.5f);
-			m_gameOverText.SetActive(false);
-			SceneManager.LoadScene("frontEnd");
+			m_gameOverButtons.SetActive (true);
 		} 
 		else 
 		{
@@ -541,6 +542,16 @@ public class GameController : MonoBehaviour
 			Cube cube = m_cube.GetComponent<Cube>();
 			cube.SetFaceMaterial(i, m_faceMaterialsList[m_cubeMaterialMappings[i]]);
 		}
+	}
+
+	public void LevelRetry()
+	{
+		SceneManager.LoadScene("mainGame");
+	}
+
+	public void BackToMainMenu()
+	{
+		SceneManager.LoadScene("frontEnd");
 	}
 
 }

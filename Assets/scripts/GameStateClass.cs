@@ -58,6 +58,7 @@ public class GameStateClass : MonoBehaviour
 
 		if (m_levelNumber + 1 < NUMBER_OF_LEVELS) 
 		{
+			// only unlock up to the last of the available levels
 			m_unlockedLevels [m_levelNumber + 1] = true;
 			SaveProgressToFile();
 		}
