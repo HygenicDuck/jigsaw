@@ -10,7 +10,7 @@ public class GameController : MonoBehaviour
 	const bool CHOOSE_ANOTHER_FACE_AFTER_EACH_WRONG_ANSWER = false;
 
 	FaceState m_requiredFace;
-	int m_score = 0;
+	//int m_score = 0;
     int m_faceFoundCount = 0;
 	CubeState m_cubeState = null;
 	GameStateClass m_gameStateClass = null;
@@ -35,8 +35,10 @@ public class GameController : MonoBehaviour
     GameObject m_levelCompleteText;
     [SerializeField]
     GameObject m_perfectText;
-    [SerializeField]
-    GameObject m_levelUnlockedText;
+	[SerializeField]
+	GameObject m_levelUnlockedText;
+	[SerializeField]
+	GameObject m_gameOverText;
 
 	[SerializeField] 
 	Material m_prototypeFaceMaterial;
@@ -49,6 +51,8 @@ public class GameController : MonoBehaviour
     Material m_memorizeMaterial;
 	[SerializeField]
 	bool[] m_levelRequiresCorrectCubeOrientation;
+	[SerializeField]
+	int[] m_levelNumberOfLives;
 
     [SerializeField] 
 	BackgroundPlane m_backgroundPlane;
@@ -59,8 +63,8 @@ public class GameController : MonoBehaviour
     [SerializeField]
     CubeOrientation m_cubeOrientation;
 
-    [SerializeField]
-    FaceStates m_agTempFaceStates;
+//    [SerializeField]
+//    FaceStates m_agTempFaceStates;
 
     int[] m_cubeMaterialMappings = new int[NUM_FACES_ON_A_CUBE];
 	CubeState.RotationActions[,] m_sequence = new CubeState.RotationActions[2,6]
@@ -73,7 +77,7 @@ public class GameController : MonoBehaviour
 	int m_sequencePosition = 0;
 	int m_sequenceType = 0;
 	int m_sequenceStartPosition = 0;
-
+	int m_livesLeft, m_initialNumberOfLives;
 
 	public enum GameState
 	{
@@ -174,8 +178,15 @@ public class GameController : MonoBehaviour
 
 	void NewGame()
 	{
-		m_score = 0;
-		ShowScore();
+		//m_score = 0;
+		int levelNum = 0;
+		if (m_gameStateClass != null)
+		{
+			levelNum = m_gameStateClass.GetLevelNumber();
+		}
+		m_initialNumberOfLives = m_levelNumberOfLives [levelNum];
+		m_livesLeft = m_initialNumberOfLives;
+		ShowLivesLeft();
 		m_ImReadyButton.SetActive(false);
 
 		ResetCubeOrientation();
@@ -190,21 +201,21 @@ public class GameController : MonoBehaviour
 
 	FaceState GetNextRequiredFace(CubeState.RotationActions move)
     {
-        m_agTempFaceStates = m_cubeOrientation.GetFaceStates();
+		FaceStates faceStates = m_cubeOrientation.GetFaceStates();
 		FaceState returnValue = null;
         switch (move)
         {
             case CubeState.RotationActions.UP:
-                returnValue = m_agTempFaceStates.GetFaceState(CubeState.Faces.BOTTOM);
+				returnValue = faceStates.GetFaceState(CubeState.Faces.BOTTOM);
                 break;
             case CubeState.RotationActions.DOWN:
-                returnValue = m_agTempFaceStates.GetFaceState(CubeState.Faces.TOP);
+				returnValue = faceStates.GetFaceState(CubeState.Faces.TOP);
                 break;
             case CubeState.RotationActions.LEFT:
-                returnValue = m_agTempFaceStates.GetFaceState(CubeState.Faces.RIGHT);
+				returnValue = faceStates.GetFaceState(CubeState.Faces.RIGHT);
                 break;
             case CubeState.RotationActions.RIGHT:
-                returnValue = m_agTempFaceStates.GetFaceState(CubeState.Faces.LEFT);
+				returnValue = faceStates.GetFaceState(CubeState.Faces.LEFT);
                 break;
         }
 
@@ -249,13 +260,13 @@ public class GameController : MonoBehaviour
 
     IEnumerator ChangeRequiredFaceCoroutine()
     {
-        m_faderPlane.FadeTo(new Color(1f, 1f, 1f, 1f), 0.15f);
-        yield return new WaitForSeconds(0.25f);
+        m_faderPlane.FadeTo(new Color(1f, 1f, 1f, 1f), 0.10f);
+        yield return new WaitForSeconds(0.15f);
         DisplayRequiredFace();
         //m_cubeMover.SetPosition(m_initialCubePosition);
         CubePullsBackOutOfBackground();
-        m_faderPlane.FadeTo(new Color(1f, 1f, 1f, 0f), 0.15f);
-        yield return new WaitForSeconds(0.25f);
+        m_faderPlane.FadeTo(new Color(1f, 1f, 1f, 0f), 0.10f);
+        yield return new WaitForSeconds(0.2f);
     }
 
     IEnumerator LevelCompleteCoroutine()
@@ -264,20 +275,21 @@ public class GameController : MonoBehaviour
         yield return new WaitForSeconds(1.6f);
         m_levelCompleteText.SetActive(false);
 
-        if (m_score == 0)
-        {
-            // perfect score - the next level is unlocked
-            m_perfectText.SetActive(true);
-            yield return new WaitForSeconds(2.0f);
-            m_perfectText.SetActive(false);
-            m_levelUnlockedText.SetActive(true);
-            yield return new WaitForSeconds(1.0f);
-            m_levelUnlockedText.SetActive(false);
-        }
+		if (m_livesLeft == m_initialNumberOfLives) 
+		{
+			// perfect score - the next level is unlocked
+			m_perfectText.SetActive (true);
+			yield return new WaitForSeconds (2.0f);
+			m_perfectText.SetActive (false);
+		}
+
+        m_levelUnlockedText.SetActive(true);
+        yield return new WaitForSeconds(1.0f);
+        m_levelUnlockedText.SetActive(false);
 
         if (m_gameStateClass != null)
         {
-            m_gameStateClass.CompletedLevel(m_score);
+			m_gameStateClass.CompletedLevel(m_initialNumberOfLives - m_livesLeft);
         }
         SceneManager.LoadScene("frontEnd");
     }
@@ -316,8 +328,8 @@ public class GameController : MonoBehaviour
 
     void CheckIfCorrect()
 	{
-        m_agTempFaceStates = m_cubeOrientation.GetFaceStates();
-        if (!m_cubeState.CheckState(m_agTempFaceStates))
+		FaceStates faceStates = m_cubeOrientation.GetFaceStates();
+		if (!m_cubeState.CheckState(faceStates))
         {
             Debug.LogError("ERROR!!!! difference in facestates");
         }
@@ -328,10 +340,15 @@ public class GameController : MonoBehaviour
 			levelNum = m_gameStateClass.GetLevelNumber();
 		}
 
-		bool correctOrientation = (m_agTempFaceStates.GetFaceState(CubeState.Faces.FRONT).m_orientation == m_requiredFace.m_orientation);
+		bool correctOrientation = (faceStates.GetFaceState(CubeState.Faces.FRONT).m_orientation == m_requiredFace.m_orientation);
+		bool levelRequiresCorrectCubeOrientation = true;
+		if (levelNum < m_levelRequiresCorrectCubeOrientation.Length) 
+		{
+			levelRequiresCorrectCubeOrientation = m_levelRequiresCorrectCubeOrientation [levelNum];
+		}
 
-		if ((m_agTempFaceStates.GetFaceState(CubeState.Faces.FRONT).m_state == m_requiredFace.m_state) &&
-			(correctOrientation || !m_levelRequiresCorrectCubeOrientation[levelNum]))
+		if ((faceStates.GetFaceState(CubeState.Faces.FRONT).m_state == m_requiredFace.m_state) &&
+			(correctOrientation || !levelRequiresCorrectCubeOrientation))
         {
             // correct
             //IncrementScore();
@@ -351,21 +368,28 @@ public class GameController : MonoBehaviour
 		m_cube.GetComponentInChildren<Rotator>().BlockRotationForTimePeriod(1.0f);
 		m_cube.GetComponent<Cube>().PlayShakeHeadAnimation();
 		yield return new WaitForSeconds(0.5f);
-		IncrementScore();
+		DecrementLivesLeft();
 		yield return new WaitForSeconds(0.5f);
 		m_cube.GetComponent<Cube>().ResetAnimation();
 
-		if (CHOOSE_ANOTHER_FACE_AFTER_EACH_WRONG_ANSWER) 
+		if (m_livesLeft == 0) 
 		{
-			// you've chosen the wrong face. Now we choose another face to find that is adjacent to this one.
-			m_requiredFace = GetNextRequiredFace (GetNextMoveInSequence ());
-			yield return ChangeRequiredFaceCoroutine ();
-		}
-		else
+			m_gameOverText.SetActive(true);
+			yield return new WaitForSeconds(1.5f);
+			m_gameOverText.SetActive(false);
+			SceneManager.LoadScene("frontEnd");
+		} 
+		else 
 		{
-			// go back to the face we were looking at before you got it wrong
-			SwitchToState(GameState.ROTATE_BACK_TO_PREVIOUS);
-			//yield return new WaitForSeconds(0.5f);
+			if (CHOOSE_ANOTHER_FACE_AFTER_EACH_WRONG_ANSWER) {
+				// you've chosen the wrong face. Now we choose another face to find that is adjacent to this one.
+				m_requiredFace = GetNextRequiredFace (GetNextMoveInSequence ());
+				yield return ChangeRequiredFaceCoroutine ();
+			} else {
+				// go back to the face we were looking at before you got it wrong
+				SwitchToState (GameState.ROTATE_BACK_TO_PREVIOUS);
+				//yield return new WaitForSeconds(0.5f);
+			}
 		}
 	}
 
@@ -374,15 +398,15 @@ public class GameController : MonoBehaviour
 		SwitchToState(GameState.FIND);
 	}
 
-	void IncrementScore()
+	void DecrementLivesLeft()
 	{
-		m_score++;
-		ShowScore();
+		m_livesLeft--;
+		ShowLivesLeft();
 	}
 
-	void ShowScore()
+	void ShowLivesLeft()
 	{
-		m_UIScore.text = m_score.ToString();
+		m_UIScore.text = m_livesLeft.ToString();
 	}
 
 

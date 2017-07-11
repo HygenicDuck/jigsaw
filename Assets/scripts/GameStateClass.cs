@@ -50,21 +50,21 @@ public class GameStateClass : MonoBehaviour
 		return m_levelNumber;
 	}
 
-    public void CompletedLevel(int score)
+    public void CompletedLevel(int livesUsed)
     {
-		Debug.Log ("CompletedLevel "+score+", "+m_levelNumber);
-        // TODO - unlock the next level if the score was 6 (i.e. did it perfectly)
-		if (score == 0) 
-		{
-			Debug.Log ("CompletedLevel 2 "+score+", "+m_levelNumber);
+//		Debug.Log ("CompletedLevel "+livesUsed+", "+m_levelNumber);
+//        // TODO - unlock the next level if the score was 6 (i.e. did it perfectly)
+//		if (livesUsed == 0) 
+//		{
+			Debug.Log ("CompletedLevel 2 "+livesUsed+", "+m_levelNumber);
 
 			if (m_levelNumber + 1 < NUMBER_OF_LEVELS) 
 			{
-				Debug.Log ("CompletedLevel 3 "+score+", "+m_levelNumber);
+				Debug.Log ("CompletedLevel 3 "+livesUsed+", "+m_levelNumber);
 				m_unlockedLevels [m_levelNumber + 1] = true;
 				SaveProgressToFile();
 			}
-		}
+//		}
     }
 
 
