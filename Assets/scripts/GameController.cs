@@ -375,6 +375,7 @@ public class GameController : MonoBehaviour
 
     IEnumerator CorrectFaceSequence()
     {
+		m_touchSwipeDetector.enabled = false;
 		m_audioSource.PlayOneShot(m_audioGotFaceCorrect, 1f);
         CubeSinksIntoBackground();
         yield return new WaitForSeconds(1.5f);
@@ -387,6 +388,8 @@ public class GameController : MonoBehaviour
         {
             yield return ChangeRequiredFaceCoroutine();
         }
+
+		m_touchSwipeDetector.enabled = true;
     }
 
     void CubeSinksIntoBackground()
@@ -460,6 +463,7 @@ public class GameController : MonoBehaviour
 
 		if (m_livesLeft == 0) 
 		{
+			m_touchSwipeDetector.enabled = false;
 			m_hudController.ScrollOut();
 			m_gameOverText.SetActive(true);
 			yield return new WaitForSeconds(1.5f);
