@@ -10,7 +10,10 @@ public class LevelButton : MonoBehaviour {
     public Text m_buttonText;
 
     [SerializeField]
-    public Image m_buttonGraphic;
+    public RawImage m_buttonGraphic;
+
+	[SerializeField]
+	public AudioSource m_selectedLevelSFX;
 
     int m_levelNumber;
 
@@ -24,9 +27,9 @@ public class LevelButton : MonoBehaviour {
 		
 	}
 
-    public void SetImage(Sprite sprite)
+    public void SetImage(Texture tex)
     {
-        m_buttonGraphic.sprite = sprite;
+        m_buttonGraphic.texture = tex;
     }
 
     public void SetText(string text)
@@ -41,7 +44,9 @@ public class LevelButton : MonoBehaviour {
 
     public void StartLevel()
     {
-		if (GameStateClass.Instance.m_unlockedLevels [m_levelNumber]) {
+		if (GameStateClass.Instance.m_unlockedLevels [m_levelNumber]) 
+		{
+			m_selectedLevelSFX.Play();
 			GameStateClass.Instance.SetLevelNumber (m_levelNumber);
 			SceneManager.LoadScene ("mainGame");
 		}

@@ -2,8 +2,8 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace UnityStandardAssets._2D
-{
+//namespace UnityStandardAssets._2D
+//{
     public class Movement : MonoBehaviour
     {
 		private Vector2 startPos;
@@ -73,4 +73,4 @@ namespace UnityStandardAssets._2D
 			}
 		}
     }
-}
+//}

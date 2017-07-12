@@ -136,7 +136,7 @@ PlayerSettings:
   protectGraphicsMemory: 0
   useHDRDisplay: 0
   applicationIdentifier:
-    Android: com.Company.ProductName
+    Android: com.kwalee.memoryblock
     Standalone: unity.DefaultCompany.innovationDay3
     Tizen: com.Company.ProductName
     iOS: com.Company.ProductName
@@ -216,8 +216,8 @@ PlayerSettings:
   AndroidTargetDevice: 0
   AndroidSplashScreenScale: 0
   androidSplashScreen: {fileID: 0}
-  AndroidKeystoreName: 
-  AndroidKeyaliasName: 
+  AndroidKeystoreName: Provisioning/android.keystore
+  AndroidKeyaliasName: memoryblock
   AndroidTVCompatibility: 1
   AndroidIsGame: 1
   androidEnableBanner: 1
@@ -558,7 +558,9 @@ PlayerSettings:
   webGLUseEmbeddedResources: 0
   webGLUseWasm: 0
   webGLCompressionFormat: 1
-  scriptingDefineSymbols: {}
+  scriptingDefineSymbols:
+    4: FACEBOOK
+    7: FACEBOOK
   platformArchitecture:
     iOS: 2
     tvOS: 1
@@ -606,7 +608,7 @@ PlayerSettings:
   tizenMicrophonePermissions: 0
   tizenDeploymentTarget: 
   tizenDeploymentTargetType: -1
-  tizenMinOSVersion: 0
+  tizenMinOSVersion: 1
   n3dsUseExtSaveData: 0
   n3dsCompressStaticMem: 1
   n3dsExtSaveDataNumber: 0x12345
@@ -661,7 +663,7 @@ PlayerSettings:
     Purchasing: 0
     UNet: 0
     Unity_Ads: 0
-  facebookSdkVersion: 7.9.1
+  facebookSdkVersion: plugin
   apiCompatibilityLevel: 2
   cloudProjectId: d97c0928-2462-4ad3-9346-9aa1209f038b
   projectName: innovationDay3

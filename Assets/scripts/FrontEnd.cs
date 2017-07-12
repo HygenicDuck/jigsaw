@@ -9,9 +9,9 @@ public class FrontEnd : MonoBehaviour {
     [SerializeField]
     public Transform m_levelButtonsPanel;
 	[SerializeField]
-	public Sprite m_levelLockedPadlock;
+	public Texture m_levelLockedPadlock;
 	[SerializeField]
-	public Sprite[] m_levelIcons;
+	public Texture[] m_levelIcons;
 	[SerializeField]
 	public GameObject m_persistantObjectPrefab;
 

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657868, g: 0.4964127, b: 0.57481724, a: 1}
+  m_IndirectSpecularColor: {r: 0.44659364, g: 0.4964301, b: 0.5748256, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -440,6 +440,7 @@ GameObject:
   - component: {fileID: 535561773}
   - component: {fileID: 535561772}
   - component: {fileID: 535561771}
+  - component: {fileID: 535561776}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -517,6 +518,17 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &535561776
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 535561770}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e0e4bd602ca54262ac346a3f458c01a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &815180761
 GameObject:
   m_ObjectHideFlags: 0
@@ -632,14 +644,25 @@ MonoBehaviour:
   m_levelButtonPrefab: {fileID: 1988577515469666, guid: 1b3ccea6956fed045898043740e574d1,
     type: 2}
   m_levelButtonsPanel: {fileID: 1385833645}
-  m_levelLockedPadlock: {fileID: 21300000, guid: dbdb049cef67141849bdf526e0c6688d,
+  m_levelLockedPadlock: {fileID: 2800000, guid: dbdb049cef67141849bdf526e0c6688d,
     type: 3}
   m_levelIcons:
-  - {fileID: 21300000, guid: 6f54a8977baed4ace85431d56323fe90, type: 3}
-  - {fileID: 21300000, guid: 6f54a8977baed4ace85431d56323fe90, type: 3}
-  - {fileID: 21300000, guid: 6f54a8977baed4ace85431d56323fe90, type: 3}
-  - {fileID: 21300000, guid: 6f54a8977baed4ace85431d56323fe90, type: 3}
-  - {fileID: 21300000, guid: 6f54a8977baed4ace85431d56323fe90, type: 3}
+  - {fileID: 2800000, guid: 9dfab030933a64a929d00a6feda3175c, type: 3}
+  - {fileID: 2800000, guid: f5a7566825a614e7fb0712ec1dc55712, type: 3}
+  - {fileID: 2800000, guid: 6c82ff58828a04a5aa003686b47e7ff2, type: 3}
+  - {fileID: 2800000, guid: b6f35306595c94a88b5a89745f058b5a, type: 3}
+  - {fileID: 2800000, guid: efd11324bfff047dda926256018f87b2, type: 3}
+  - {fileID: 2800000, guid: 84e98750bf31148fe8d3120c5f11ea0b, type: 3}
+  - {fileID: 2800000, guid: 7d31ec64f298344fa9fbedbf740b63eb, type: 3}
+  - {fileID: 2800000, guid: 82245cda57ada47849650c8ad5caa64e, type: 3}
+  - {fileID: 2800000, guid: b43c54479759f4d579929030257998dd, type: 3}
+  - {fileID: 2800000, guid: d02f23ec1bf4e4b24aed7cab6b972f45, type: 3}
+  - {fileID: 2800000, guid: d95d8ebe27c814df987bdf090941d4a7, type: 3}
+  - {fileID: 2800000, guid: 497407f312b244fcfbbdb49b75c07836, type: 3}
+  - {fileID: 2800000, guid: a46eddd4beb7d4bb383f4aa1ccd14e78, type: 3}
+  - {fileID: 2800000, guid: d96b852ff8eb84ece9855d22ccfaefbd, type: 3}
+  - {fileID: 2800000, guid: 387f9bad5fd4f47da88f357ba05770ff, type: 3}
+  - {fileID: 2800000, guid: 2885a56a54e3b4abdafa91e0ff3b5575, type: 3}
   m_persistantObjectPrefab: {fileID: 1204857221403594, guid: 4c6cc0d8b09205648b1373f9e71d13ba,
     type: 2}
 --- !u!1 &898581680

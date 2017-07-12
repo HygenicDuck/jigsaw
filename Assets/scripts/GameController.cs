@@ -18,8 +18,6 @@ public class GameController : MonoBehaviour
 
     [SerializeField] 
 	Text m_UIRequiredNumber;
-	[SerializeField] 
-	Text m_UIScore;
     [SerializeField]
     GameObject m_cube;
     [SerializeField]
@@ -40,12 +38,18 @@ public class GameController : MonoBehaviour
 	[SerializeField]
 	GameObject m_gameOverText;
 	[SerializeField]
+	Text[] m_levelNumberTexts;
+	[SerializeField]
+	RawImage[] m_UIThingsThatChangeColour;
+	[SerializeField]
+	MeshRenderer m_backPlaneMeshRenderer;
+	[SerializeField]
 	GameObject m_gameOverButtons;
+	[SerializeField]
+	HUDController m_hudController;
 
 	[SerializeField] 
 	Material m_prototypeFaceMaterial;
-	[SerializeField] 
-	List<Material> m_faceMaterialsList = new List<Material> ();
 
 	[SerializeField] 
 	Texture[] m_faceTextures;
@@ -55,6 +59,8 @@ public class GameController : MonoBehaviour
 	bool[] m_levelRequiresCorrectCubeOrientation;
 	[SerializeField]
 	int[] m_levelNumberOfLives;
+	[SerializeField]
+	Color[] m_levelHUDColours;
 
     [SerializeField] 
 	BackgroundPlane m_backgroundPlane;
@@ -65,10 +71,26 @@ public class GameController : MonoBehaviour
     [SerializeField]
     CubeOrientation m_cubeOrientation;
 
+	[SerializeField]
+	AudioSource m_audioSource;
+	[SerializeField]
+	AudioClip m_audioImReadyAppears;
+	[SerializeField]
+	AudioClip m_audioImReadyPressed;
+	[SerializeField]
+	AudioClip m_audioGotFaceCorrect;
+	[SerializeField]
+	AudioClip m_audioGotFaceWrong;
+	[SerializeField]
+	AudioClip m_audioCubeComplete;
+	[SerializeField]
+	AudioClip m_audioPerfect;
+
 //    [SerializeField]
 //    FaceStates m_agTempFaceStates;
 
     int[] m_cubeMaterialMappings = new int[NUM_FACES_ON_A_CUBE];
+	List<Material> m_faceMaterialsList = new List<Material> ();
 	CubeState.RotationActions[,] m_sequence = new CubeState.RotationActions[2,6]
 		{ 
 				{ CubeState.RotationActions.RIGHT, CubeState.RotationActions.RIGHT, CubeState.RotationActions.UP, CubeState.RotationActions.RIGHT, CubeState.RotationActions.RIGHT, CubeState.RotationActions.UP },
@@ -192,6 +214,8 @@ public class GameController : MonoBehaviour
 
 	void NewGame()
 	{
+		m_gameStateClass.FadeOutMusic();
+
 		//m_score = 0;
 		int levelNum = 0;
 		if (m_gameStateClass != null)
@@ -200,10 +224,20 @@ public class GameController : MonoBehaviour
 		}
 		m_initialNumberOfLives = m_levelNumberOfLives [levelNum];
 		m_livesLeft = m_initialNumberOfLives;
-		ShowLivesLeft();
+		//ShowLivesLeft();
 		m_ImReadyButton.SetActive(false);
 
 		ResetCubeOrientation();
+
+		m_hudController.SetupLives(m_initialNumberOfLives);
+		m_hudController.SetupProgression(NUM_FACES_ON_A_CUBE);
+		if (levelNum < m_levelHUDColours.Length)
+		{
+			m_hudController.SetColour(m_levelHUDColours[levelNum]);
+			SetColourOfUIThingsThatChangeColour(m_levelHUDColours[levelNum]);
+		}
+		SetLevelNumberTexts(levelNum+1);
+
   //      StartMoveSequence();
   //      m_requiredNumber = GetNextRequiredFace(GetNextMoveInSequence());
   //      //PickRandomRequiredFace();
@@ -211,6 +245,25 @@ public class GameController : MonoBehaviour
 
 		//m_cube.GetComponent<Cube>().PlayShowSidesAnimation();
 		SwitchToState(GameState.MEMORIZE);
+	}
+
+	void SetLevelNumberTexts(int number)
+	{
+		foreach(Text tex in m_levelNumberTexts)
+		{
+			tex.text = "Level "+number;
+		}
+	}
+
+	void SetColourOfUIThingsThatChangeColour(Color col)
+	{
+		foreach(RawImage raw in m_UIThingsThatChangeColour)
+		{
+			raw.color = col;
+		}
+
+		Material material = m_backPlaneMeshRenderer.material;
+		material.color = col;
 	}
 
 	FaceState GetNextRequiredFace(CubeState.RotationActions move)
@@ -283,8 +336,19 @@ public class GameController : MonoBehaviour
         yield return new WaitForSeconds(0.2f);
     }
 
+	IEnumerator ShowFirstFaceFaceCoroutine()
+	{
+		m_faderPlane.FadeTo(new Color(1f, 1f, 1f, 1f), 0.10f);
+		yield return new WaitForSeconds(0.15f);
+		DisplayRequiredFace();
+		m_faderPlane.FadeTo(new Color(1f, 1f, 1f, 0f), 0.10f);
+		yield return new WaitForSeconds(0.2f);
+	}
+
     IEnumerator LevelCompleteCoroutine()
     {
+		m_audioSource.PlayOneShot(m_audioCubeComplete, 1f);
+
         m_levelCompleteText.SetActive(true);
         yield return new WaitForSeconds(1.6f);
         m_levelCompleteText.SetActive(false);
@@ -292,14 +356,15 @@ public class GameController : MonoBehaviour
 		if (m_livesLeft == m_initialNumberOfLives) 
 		{
 			// perfect score - the next level is unlocked
+			m_audioSource.PlayOneShot(m_audioPerfect, 1f);
 			m_perfectText.SetActive (true);
 			yield return new WaitForSeconds (2.0f);
 			m_perfectText.SetActive (false);
 		}
 
-        m_levelUnlockedText.SetActive(true);
-        yield return new WaitForSeconds(1.0f);
-        m_levelUnlockedText.SetActive(false);
+//        m_levelUnlockedText.SetActive(true);
+//        yield return new WaitForSeconds(1.0f);
+//        m_levelUnlockedText.SetActive(false);
 
         if (m_gameStateClass != null)
         {
@@ -310,6 +375,7 @@ public class GameController : MonoBehaviour
 
     IEnumerator CorrectFaceSequence()
     {
+		m_audioSource.PlayOneShot(m_audioGotFaceCorrect, 1f);
         CubeSinksIntoBackground();
         yield return new WaitForSeconds(1.5f);
         m_faceFoundCount++;
@@ -368,6 +434,8 @@ public class GameController : MonoBehaviour
         {
             // correct
             //IncrementScore();
+			m_hudController.AdvanceProgression(m_faceFoundCount);
+
 			m_requiredFace = GetNextRequiredFace(GetNextMoveInSequence());
             //PickRandomRequiredFace();
             StartCoroutine(CorrectFaceSequence());
@@ -381,6 +449,8 @@ public class GameController : MonoBehaviour
 
 	IEnumerator GotItWrongCoRoutine()
 	{
+		m_audioSource.PlayOneShot(m_audioGotFaceWrong, 1f);
+
 		m_cube.GetComponentInChildren<Rotator>().BlockRotationForTimePeriod(1.0f);
 		m_cube.GetComponent<Cube>().PlayShakeHeadAnimation();
 		yield return new WaitForSeconds(0.5f);
@@ -390,6 +460,7 @@ public class GameController : MonoBehaviour
 
 		if (m_livesLeft == 0) 
 		{
+			m_hudController.ScrollOut();
 			m_gameOverText.SetActive(true);
 			yield return new WaitForSeconds(1.5f);
 			m_gameOverButtons.SetActive (true);
@@ -421,7 +492,7 @@ public class GameController : MonoBehaviour
 
 	void ShowLivesLeft()
 	{
-		m_UIScore.text = m_livesLeft.ToString();
+		m_hudController.LoseLife(m_livesLeft);
 	}
 
 
@@ -477,10 +548,13 @@ public class GameController : MonoBehaviour
 	{
 		yield return new WaitForSeconds(3.5f);
 		m_ImReadyButton.SetActive(true);
+		m_audioSource.PlayOneShot(m_audioImReadyAppears, 1f);
 	}
 
 	public void MemorizeCountdownComplete()
 	{
+		// user has just pressed the 'I'm ready' button
+		m_audioSource.PlayOneShot(m_audioImReadyPressed, 1f);
 		m_ImReadyButton.SetActive(false);
 		SwitchToState(GameState.ROTATE_CUBE_INTO_POSITION);
     }
@@ -498,12 +572,14 @@ public class GameController : MonoBehaviour
 
 	IEnumerator WaitForRotateCubeToStartPosition()
 	{
-		yield return new WaitForSeconds(1.5f);
+		yield return new WaitForSeconds(0.75f);
+		m_hudController.ScrollIn();
+		yield return new WaitForSeconds(0.75f);
 
 		StartMoveSequence();
 		m_requiredFace = GetNextRequiredFace(GetNextMoveInSequence());
 		//PickRandomRequiredFace();
-		DisplayRequiredFace();
+		yield return ShowFirstFaceFaceCoroutine();
 
 		if ((m_gameStateClass != null) && (m_gameStateClass.GetLevelNumber () == 0)) // && !m_gameStateClass.HasTutorialBeenShown (TutorialManager.MessageID.SWIPE_TO_ROTATE)) 
 		{
@@ -551,6 +627,8 @@ public class GameController : MonoBehaviour
 
 	public void BackToMainMenu()
 	{
+		GameStateClass.Instance.FadeInMusic();
+
 		SceneManager.LoadScene("frontEnd");
 	}
 

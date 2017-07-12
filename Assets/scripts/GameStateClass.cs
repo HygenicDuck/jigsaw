@@ -5,9 +5,9 @@ using System.IO;
 public class GameStateClass : MonoBehaviour 
 {
 
-	public static int NUMBER_OF_LEVELS = 15;
-	public bool[] m_unlockedLevels = new bool[NUMBER_OF_LEVELS];
-	public bool[] m_shownTutorials = new bool[(int)TutorialManager.MessageID.LAST];
+	public static int NUMBER_OF_LEVELS = 16;
+	public bool[] m_unlockedLevels;
+	public bool[] m_shownTutorials;
 	int m_levelNumber;
     static GameStateClass m_instance = null;
 	bool m_swipeTutorialHasBeenShown = false;
@@ -32,8 +32,14 @@ public class GameStateClass : MonoBehaviour
 
 	public void Initialise()
 	{
-		m_instance = this;
+		//AGTEMP - no music
+		AudioSource audio = GetComponent<AudioSource>();
+		audio.volume = 0f;
+
+		m_unlockedLevels = new bool[NUMBER_OF_LEVELS];
 		m_unlockedLevels[0] = true;
+		m_shownTutorials = new bool[(int)TutorialManager.MessageID.LAST];
+		m_instance = this;
 		LoadProgressFromFile();
 	}
 	
@@ -131,10 +137,50 @@ public class GameStateClass : MonoBehaviour
 				SaveClass saveClass = JsonUtility.FromJson<SaveClass> (json);
 				for(int i=0; i<NUMBER_OF_LEVELS; i++)
 				{
+					Debug.Log("LoadProgressFromFile "+i+" size = "+m_unlockedLevels.Length);
 					m_unlockedLevels[i] = (i <= saveClass.levelReached);
 				}
 			}
 		}
 	}
+
+	public void FadeOutMusic()
+	{
+		AudioSource audio = GetComponent<AudioSource>();
+		StartCoroutine(FadeOut(audio,1f));
+	}
+
+	public void FadeInMusic()
+	{
+		AudioSource audio = GetComponent<AudioSource>();
+		StartCoroutine(FadeIn(audio,0.5f,1f));
+	}
+
+	public static IEnumerator FadeOut (AudioSource audioSource, float FadeTime) {
+		float startVolume = audioSource.volume;
+
+		while (audioSource.volume > 0) {
+			audioSource.volume -= startVolume * Time.deltaTime / FadeTime;
+
+			yield return null;
+		}
+
+		//audioSource.Stop ();
+		audioSource.volume = 0f;
+	}
+
+	public static IEnumerator FadeIn (AudioSource audioSource, float volume, float FadeTime) {
+		audioSource.volume = 0f;
+		float startVolume = audioSource.volume;
+
+		while (audioSource.volume < volume) {
+			audioSource.volume += volume * Time.deltaTime / FadeTime;
+
+			yield return null;
+		}
+
+		audioSource.volume = volume;
+	}
+
 
 }
