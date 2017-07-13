@@ -33,8 +33,8 @@ public class GameStateClass : MonoBehaviour
 	public void Initialise()
 	{
 		//AGTEMP - no music
-		AudioSource audio = GetComponent<AudioSource>();
-		audio.volume = 0f;
+		//AudioSource audio = GetComponent<AudioSource>();
+		//audio.volume = 0f;
 
 		m_unlockedLevels = new bool[NUMBER_OF_LEVELS];
 		m_unlockedLevels[0] = true;
@@ -172,6 +172,7 @@ public class GameStateClass : MonoBehaviour
 	public static IEnumerator FadeIn (AudioSource audioSource, float volume, float FadeTime) {
 		audioSource.volume = 0f;
 		float startVolume = audioSource.volume;
+		//audioSource.Play ();
 
 		while (audioSource.volume < volume) {
 			audioSource.volume += volume * Time.deltaTime / FadeTime;

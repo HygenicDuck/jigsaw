@@ -70,6 +70,8 @@ public class GameController : MonoBehaviour
     Fader m_faderPlane;
     [SerializeField]
     CubeOrientation m_cubeOrientation;
+	[SerializeField]
+	GameObject m_memorizePlane;
 
 	[SerializeField]
 	AudioSource m_audioSource;
@@ -238,6 +240,8 @@ public class GameController : MonoBehaviour
 		}
 		SetLevelNumberTexts(levelNum+1);
 
+		m_memorizePlane.SetActive (true);
+
   //      StartMoveSequence();
   //      m_requiredNumber = GetNextRequiredFace(GetNextMoveInSequence());
   //      //PickRandomRequiredFace();
@@ -327,6 +331,7 @@ public class GameController : MonoBehaviour
 
     IEnumerator ChangeRequiredFaceCoroutine()
     {
+		m_faderPlane.gameObject.SetActive (true);
         m_faderPlane.FadeTo(new Color(1f, 1f, 1f, 1f), 0.10f);
         yield return new WaitForSeconds(0.15f);
         DisplayRequiredFace();
@@ -334,15 +339,19 @@ public class GameController : MonoBehaviour
         CubePullsBackOutOfBackground();
         m_faderPlane.FadeTo(new Color(1f, 1f, 1f, 0f), 0.10f);
         yield return new WaitForSeconds(0.2f);
+		m_faderPlane.gameObject.SetActive (false);
     }
 
 	IEnumerator ShowFirstFaceFaceCoroutine()
 	{
+		m_faderPlane.gameObject.SetActive (true);
 		m_faderPlane.FadeTo(new Color(1f, 1f, 1f, 1f), 0.10f);
 		yield return new WaitForSeconds(0.15f);
 		DisplayRequiredFace();
+		m_memorizePlane.SetActive (false);
 		m_faderPlane.FadeTo(new Color(1f, 1f, 1f, 0f), 0.10f);
 		yield return new WaitForSeconds(0.2f);
+		m_faderPlane.gameObject.SetActive (false);
 	}
 
     IEnumerator LevelCompleteCoroutine()
@@ -370,7 +379,16 @@ public class GameController : MonoBehaviour
         {
 			m_gameStateClass.CompletedLevel(m_initialNumberOfLives - m_livesLeft);
         }
-        SceneManager.LoadScene("frontEnd");
+
+		if (m_gameStateClass.GetLevelNumber () == GameStateClass.NUMBER_OF_LEVELS - 1) 
+		{
+			SceneManager.LoadScene ("completedGame");
+		} 
+		else 
+		{
+			GameStateClass.Instance.FadeInMusic();
+			SceneManager.LoadScene ("frontEnd");
+		}
     }
 
     IEnumerator CorrectFaceSequence()
@@ -518,7 +536,6 @@ public class GameController : MonoBehaviour
 			m_memorizeText.SetActive(true);
 			Countdown countdown = m_memorizeText.gameObject.GetComponentInChildren<Countdown>();
 			m_ImReadyButton.SetActive(false);
-			StartCoroutine(ShowImReadyButtonAfterDelay());
 			//countdown.StartListening("COUNTDOWN_COMPLETE", MemorizeCountdownComplete);
 			break;
 		case GameState.ROTATE_CUBE_INTO_POSITION:
@@ -548,9 +565,14 @@ public class GameController : MonoBehaviour
 
 	}
 
+	public void StartRevealOfImReadyButton()
+	{
+		StartCoroutine(ShowImReadyButtonAfterDelay());
+	}
+
 	IEnumerator ShowImReadyButtonAfterDelay()
 	{
-		yield return new WaitForSeconds(3.5f);
+		yield return new WaitForSeconds(2.0f);
 		m_ImReadyButton.SetActive(true);
 		m_audioSource.PlayOneShot(m_audioImReadyAppears, 1f);
 	}

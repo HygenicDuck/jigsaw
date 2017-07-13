@@ -14,6 +14,7 @@ public class FreeRotation : MessagingManager {
 	bool m_touching;
 	float m_timeDown;
 	Vector2 m_spinningSpeed;
+	bool m_detectedFirstTouch = false;
 
 	[SerializeField] 
 	GameObject m_controlledObject;
@@ -80,6 +81,16 @@ public class FreeRotation : MessagingManager {
 		Quaternion dXRot = Quaternion.AngleAxis(-m_deltaTouchPos.x * ROTATION_SPEED, Vector3.up);
 		Quaternion dYRot = Quaternion.AngleAxis(m_deltaTouchPos.y * ROTATION_SPEED, Vector3.right);
 		m_controlledObject.transform.localRotation = dXRot * dYRot * currentRot;
+
+		if (!m_detectedFirstTouch)
+		{
+			GameController.Instance.StartRevealOfImReadyButton ();
+		}
+		m_detectedFirstTouch = true;
 	}
 
+	public void StartFreeRotation()
+	{
+		m_detectedFirstTouch = false;
+	}
 }

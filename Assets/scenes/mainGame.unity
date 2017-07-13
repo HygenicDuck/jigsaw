@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.45140082, g: 0.5009341, b: 0.57258713, a: 1}
+  m_IndirectSpecularColor: {r: 0.45138234, g: 0.50091714, b: 0.57257694, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -4076,6 +4076,7 @@ MonoBehaviour:
   m_ImReadyButton: {fileID: 788124704}
   m_faderPlane: {fileID: 444560204}
   m_cubeOrientation: {fileID: 1859779992}
+  m_memorizePlane: {fileID: 2103674766}
   m_audioSource: {fileID: 1912998033}
   m_audioImReadyAppears: {fileID: 8300000, guid: 8e5c1b7ebacd34b2c85b95e167008a58,
     type: 3}
