@@ -11,6 +11,7 @@ public class GameStateClass : MonoBehaviour
 	int m_levelNumber;
     static GameStateClass m_instance = null;
 	bool m_swipeTutorialHasBeenShown = false;
+	int m_lastPlayedLevel = 0;
 
 
     public static GameStateClass Instance
@@ -58,6 +59,11 @@ public class GameStateClass : MonoBehaviour
 		return m_levelNumber;
 	}
 
+	public int GetLastPlayedLevelNumber()
+	{
+		return m_lastPlayedLevel;
+	}
+
     public void CompletedLevel(int livesUsed)
     {
 		Debug.Log ("CompletedLevel "+livesUsed+", "+m_levelNumber);
@@ -68,7 +74,14 @@ public class GameStateClass : MonoBehaviour
 			m_unlockedLevels [m_levelNumber + 1] = true;
 			SaveProgressToFile();
 		}
+
+		RecordLastPlayedLevel ();
     }
+
+	public void RecordLastPlayedLevel()
+	{
+		m_lastPlayedLevel = m_levelNumber;
+	}
 
 	public void ShownTutorial (TutorialManager.MessageID tutorialID)
 	{

@@ -43,6 +43,13 @@ using UnityEngine.UI;
 			moving = false;
 		}
 
+		public void SetPosition(Vector2 pos)
+		{
+			RectTransform rt = gameObject.GetComponent<RectTransform>();
+			rt.localPosition = pos;
+			startPos = rt.localPosition;
+		}
+
 		public void MoveBy (Vector2 offset, float time, bool linear = false)
 		{
 			RectTransform rt = gameObject.GetComponent<RectTransform>();

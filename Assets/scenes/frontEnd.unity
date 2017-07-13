@@ -665,6 +665,7 @@ MonoBehaviour:
   - {fileID: 2800000, guid: 2885a56a54e3b4abdafa91e0ff3b5575, type: 3}
   m_persistantObjectPrefab: {fileID: 1204857221403594, guid: 4c6cc0d8b09205648b1373f9e71d13ba,
     type: 2}
+  m_levelCarousel: {fileID: 1188905300}
 --- !u!1 &898581680
 GameObject:
   m_ObjectHideFlags: 0
@@ -1065,6 +1066,22 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1143006154}
+--- !u!1 &1168004196 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1212735040147234, guid: 6a4c453261a27bb4b8f6932d7afbf114,
+    type: 2}
+  m_PrefabInternal: {fileID: 1385833644}
+--- !u!114 &1168004199
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1168004196}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 662232cb19b3d494f9c8d10b07d2f7f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1178276676
 GameObject:
   m_ObjectHideFlags: 0
@@ -1133,6 +1150,30 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1178276676}
+--- !u!1 &1188905296 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1460889163345022, guid: 6a4c453261a27bb4b8f6932d7afbf114,
+    type: 2}
+  m_PrefabInternal: {fileID: 1385833644}
+--- !u!114 &1188905299 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114611516215551998, guid: 6a4c453261a27bb4b8f6932d7afbf114,
+    type: 2}
+  m_PrefabInternal: {fileID: 1385833644}
+  m_Script: {fileID: 1367256648, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+--- !u!114 &1188905300
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1188905296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a637100554a60624da54782d738695b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_scrollRect: {fileID: 1188905299}
+  m_contentMover: {fileID: 1168004199}
 --- !u!1001 &1385833644
 Prefab:
   m_ObjectHideFlags: 0

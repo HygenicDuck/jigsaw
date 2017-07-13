@@ -484,6 +484,7 @@ public class GameController : MonoBehaviour
 			m_touchSwipeDetector.enabled = false;
 			m_hudController.ScrollOut();
 			m_gameOverText.SetActive(true);
+			GameStateClass.Instance.RecordLastPlayedLevel ();
 			yield return new WaitForSeconds(1.5f);
 			m_gameOverButtons.SetActive (true);
 		} 

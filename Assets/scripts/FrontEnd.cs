@@ -14,6 +14,8 @@ public class FrontEnd : MonoBehaviour {
 	public Texture[] m_levelIcons;
 	[SerializeField]
 	public GameObject m_persistantObjectPrefab;
+	[SerializeField]
+	public LevelCarouselController m_levelCarousel;
 
 
     // Use this for initialization
@@ -26,6 +28,7 @@ public class FrontEnd : MonoBehaviour {
 			gameStateClass.Initialise ();
 		}
 
+		int highestUnlockedLevel = 0;
 		for (int i = 0; i < GameStateClass.NUMBER_OF_LEVELS; i++)
         {
             GameObject levelButton = Instantiate(m_levelButtonPrefab);
@@ -33,14 +36,20 @@ public class FrontEnd : MonoBehaviour {
 			lb.SetText("Level " + (i+1));
             lb.SetLevelNumber(i);
 			Debug.Log ("m_unlockedLevels "+i+"  = "+GameStateClass.Instance.m_unlockedLevels[i]);
-			if (GameStateClass.Instance.m_unlockedLevels[i]) {
+			if (GameStateClass.Instance.m_unlockedLevels[i]) 
+			{
 				lb.SetImage (m_levelIcons[i]);
-			} else {
+				highestUnlockedLevel = i;
+			} 
+			else 
+			{
 				lb.SetImage (m_levelLockedPadlock);
 			}
             levelButton.transform.SetParent(m_levelButtonsPanel);
             levelButton.transform.localScale = new Vector3(1f, 1f, 1f);
         }
+
+		m_levelCarousel.MoveToLevel (highestUnlockedLevel, GameStateClass.Instance.GetLastPlayedLevelNumber());
 	}
 	
 	// Update is called once per frame
