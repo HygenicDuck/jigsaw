@@ -354,9 +354,44 @@ public class GameController : MonoBehaviour
 		m_faderPlane.gameObject.SetActive (false);
 	}
 
+	void LevelCompleteAnalytics()
+	{
+		int level = GameStateClass.Instance.GetLevelNumber () + 1;
+		//Core.Analytics.Dispatcher.SendEvent(Core.Analytics.Events.LEVEL_COMPLETED, "level", level);
+		switch (level) 
+		{
+		case 1:
+			Core.Analytics.Dispatcher.SendEvent(Core.Analytics.Events.LEVEL_1_COMPLETED);
+			break;
+		case 2:
+			Core.Analytics.Dispatcher.SendEvent(Core.Analytics.Events.LEVEL_2_COMPLETED);
+			break;
+		case 3:
+			Core.Analytics.Dispatcher.SendEvent(Core.Analytics.Events.LEVEL_3_COMPLETED);
+			break;
+		case 4:
+			Core.Analytics.Dispatcher.SendEvent(Core.Analytics.Events.LEVEL_4_COMPLETED);
+			break;
+		case 5:
+			Core.Analytics.Dispatcher.SendEvent(Core.Analytics.Events.LEVEL_5_COMPLETED);
+			break;
+		case 10:
+			Core.Analytics.Dispatcher.SendEvent(Core.Analytics.Events.LEVEL_10_COMPLETED);
+			break;
+		case 15:
+			Core.Analytics.Dispatcher.SendEvent(Core.Analytics.Events.LEVEL_15_COMPLETED);
+			break;
+		case 16:
+			Core.Analytics.Dispatcher.SendEvent(Core.Analytics.Events.LEVEL_16_COMPLETED);
+			break;
+		}
+	}
+
     IEnumerator LevelCompleteCoroutine()
     {
 		m_audioSource.PlayOneShot(m_audioCubeComplete, 1f);
+
+		LevelCompleteAnalytics ();
 
         m_levelCompleteText.SetActive(true);
         yield return new WaitForSeconds(1.6f);

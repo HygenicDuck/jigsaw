@@ -60,6 +60,7 @@ public class FrontEnd : MonoBehaviour {
 	public void StartLevel(int levNumber)
 	{
 		GameStateClass.Instance.SetLevelNumber(levNumber);
+		Core.Analytics.Dispatcher.SendEvent(Core.Analytics.Events.LEVEL_SELECTED, "level", levNumber+1);
 		SceneManager.LoadScene("mainGame");
 	}
 }
